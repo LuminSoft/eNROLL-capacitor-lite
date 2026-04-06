@@ -1,0 +1,24 @@
+source 'https://github.com/LuminSoft/eNROLL-Neo-Core-specs.git'
+source 'https://github.com/CocoaPods/Specs.git'
+
+platform :ios, '15.5'
+use_frameworks! :linkage => :static
+
+def capacitor_pods
+  pod 'Capacitor', :path => '../../node_modules/@capacitor/ios'
+  pod 'CapacitorCordova', :path => '../../node_modules/@capacitor/ios'
+end
+
+target 'App' do
+  capacitor_pods
+  pod 'EnrollCapacitorPlugin', :path => '../../..'
+end
+
+post_install do |installer|
+  installer.pods_project.targets.each do |target|
+    target.build_configurations.each do |config|
+      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '15.5'
+      config.build_settings['EXCLUDED_ARCHS[sdk=iphonesimulator*]'] = 'i386'
+    end
+  end
+end

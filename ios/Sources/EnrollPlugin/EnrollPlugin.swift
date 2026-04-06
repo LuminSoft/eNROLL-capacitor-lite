@@ -105,7 +105,7 @@ public class EnrollPlugin: CAPPlugin, CAPBridgedPlugin, EnrollCallBack {
             }
 
             do {
-                let initModel = EnrollInitModel(
+                let initModel = try EnrollInitModel(
                     tenantId: tenantId,
                     tenantSecret: tenantSecret,
                     enrollEnviroment: enrollEnvironment,
