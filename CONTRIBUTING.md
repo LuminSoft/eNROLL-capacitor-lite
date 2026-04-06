@@ -7,39 +7,69 @@ This guide provides instructions for contributing to this Capacitor plugin.
 ### Local Setup
 
 1. Fork and clone the repo.
-1. Install the dependencies.
 
-    ```shell
-    npm install
-    ```
+```bash
+# Clone the repo
+git clone https://github.com/LuminSoft/enroll-capacitor-plugin.git
+cd enroll-capacitor-plugin
 
-1. Install SwiftLint if you're on macOS.
+# Install dependencies
+npm install
+```
 
-    ```shell
-    brew install swiftlint
-    ```
+## Scripts
 
-### Scripts
+| Command | Description |
+|---------|-------------|
+| `npm run build` | Clean, generate docs, compile TypeScript, bundle with Rollup |
+| `npm run watch` | Watch TypeScript files for changes |
+| `npm run lint` | Run ESLint, Prettier check, and SwiftLint |
+| `npm run fmt` | Auto-fix ESLint, Prettier, and SwiftLint issues |
+| `npm run verify` | Full build verification (iOS + Android + Web) |
+| `npm run verify:web` | TypeScript build only |
+| `npm run verify:android` | Gradle clean build + test |
+| `npm run verify:ios` | Xcode build for iOS |
 
-#### `npm run build`
+## Development Workflow
 
-Build the plugin web assets and generate plugin API documentation using [`@capacitor/docgen`](https://github.com/ionic-team/capacitor-docgen).
+1. **Create a branch** from `main` with a descriptive name
+2. **Make changes** to the relevant layer(s):
+   - TypeScript API: `src/definitions.ts`, `src/index.ts`, `src/web.ts`
+   - Android bridge: `android/src/main/kotlin/.../EnrollPlugin.kt`
+   - iOS bridge: `ios/Sources/EnrollPlugin/EnrollPlugin.swift`
+3. **Run `npm run build`** to verify TypeScript compiles
+4. **Test on device** — both Android and iOS if your change touches native code
+5. **Update documentation** — README, CHANGELOG, docs/ as needed
+6. **Submit PR** with the review checklist from PROJECT_RULES.md
 
-It will compile the TypeScript code from `src/` into ESM JavaScript in `dist/esm/`. These files are used in apps with bundlers when your plugin is imported.
+## Code Style
 
-Then, Rollup will bundle the code into a single file at `dist/plugin.js`. This file is used in apps without bundlers by including it as a script in `index.html`.
+- **TypeScript:** Strict mode, no `any` in public API, JSDoc on all exports
+- **Kotlin:** Follow Kotlin conventions, no `!!` force-unwrap
+- **Swift:** Follow Swift conventions, use `guard` for optionals, no force-unwraps
 
-#### `npm run verify`
+## PR Requirements
 
-Build and validate the web and native projects.
+Every PR must include:
+- Description of what changed and why
+- CHANGELOG.md entry
+- Risk assessment (Low/Medium/High)
+- Backward compatibility statement
+- Test results on both platforms (if native code changed)
 
-This is useful to run in CI to verify that the plugin builds for all platforms.
+## Project Structure
 
-#### `npm run lint` / `npm run fmt`
+```
+src/                  → TypeScript definitions and plugin registration
+android/              → Kotlin native bridge
+ios/                  → Swift native bridge
+docs/                 → Detailed documentation
+example-app/          → Example Ionic app for testing
+```
 
-Check formatting and code quality, autoformat/autofix if possible.
+## Questions?
 
-This template is integrated with ESLint, Prettier, and SwiftLint. Using these tools is completely optional, but the [Capacitor Community](https://github.com/capacitor-community/) strives to have consistent code style and structure for easier cooperation.
+Open a GitHub issue or reach out to the LuminSoft team.
 
 ## Publishing
 

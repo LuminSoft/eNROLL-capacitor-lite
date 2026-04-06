@@ -1,0 +1,11 @@
+//
+//  EnrollConfig.xcconfig
+//  EnrollFramework
+//
+//  Created by Bahi Elfeky on 01/06/2025.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://developer.apple.com/documentation/xcode/adding-a-build-configuration-file-to-your-project
+
+SDK_VERSION = 1.0.5

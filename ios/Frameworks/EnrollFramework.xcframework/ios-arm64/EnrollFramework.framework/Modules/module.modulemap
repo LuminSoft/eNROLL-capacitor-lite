@@ -1,0 +1,11 @@
+framework module EnrollFramework {
+  umbrella header "EnrollFramework.h"
+  export *
+
+  module * { export * }
+}
+
+module EnrollFramework.Swift {
+  header "EnrollFramework-Swift.h"
+  requires objc
+}

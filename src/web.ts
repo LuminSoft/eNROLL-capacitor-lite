@@ -1,10 +1,12 @@
 import { WebPlugin } from '@capacitor/core';
 
-import type { EnrollPlugin } from './definitions';
+import type { EnrollPlugin, EnrollSuccessResult, StartEnrollOptions } from './definitions';
 
 export class EnrollWeb extends WebPlugin implements EnrollPlugin {
-  async echo(options: { value: string }): Promise<{ value: string }> {
-    console.log('ECHO', options);
-    return options;
+  async startEnroll(_options: StartEnrollOptions): Promise<EnrollSuccessResult> {
+    throw this.unavailable(
+      'The eNROLL plugin is not available on the web. ' +
+        'Run this app on a native Android or iOS device using Capacitor.',
+    );
   }
 }
