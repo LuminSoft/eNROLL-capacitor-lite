@@ -10,6 +10,7 @@ SCHEME="App"
 CONFIGURATION="${CONFIGURATION:-Debug}"
 DEVICE_ID="${DEVICE_ID:-}"
 DERIVED_DATA_PATH="${DERIVED_DATA_PATH:-$ROOT_DIR/.derived-data/run-example-ios}"
+PLUGIN_PACKAGE_NAME="$(sed -n 's/  "name": "\(.*\)",/\1/p' "$ROOT_DIR/package.json" | head -n 1)"
 
 list_connected_ios_devices() {
   xcrun xctrace list devices | awk '
@@ -24,6 +25,21 @@ list_connected_ios_devices() {
       }
     }
   '
+}
+
+ensure_example_dependency() {
+  local lockfile_path="$EXAMPLE_APP_DIR/package-lock.json"
+  local module_path="$EXAMPLE_APP_DIR/node_modules/$PLUGIN_PACKAGE_NAME"
+
+  if [[ -d "$module_path" ]] && grep -q "\"$PLUGIN_PACKAGE_NAME\": \"file:..\"" "$lockfile_path" 2>/dev/null; then
+    return
+  fi
+
+  echo "==> Refreshing example app dependencies for $PLUGIN_PACKAGE_NAME"
+  (
+    cd "$EXAMPLE_APP_DIR"
+    npm install
+  )
 }
 
 select_device_if_needed() {
@@ -65,6 +81,8 @@ select_device_if_needed() {
 echo "==> Building Capacitor plugin"
 cd "$ROOT_DIR"
 npm run build
+
+ensure_example_dependency
 
 echo "==> Building example app web assets"
 cd "$EXAMPLE_APP_DIR"

@@ -1,7 +1,7 @@
 {
-  "name": "enroll-capacitor-plugin",
-  "version": "0.1.0",
-  "description": "Capacitor plugin for eNROLL Lite SDK - eKYC identity verification for Ionic mobile apps",
+  "name": "enroll-capacitor-neo",
+  "version": "1.0.0",
+  "description": "Capacitor plugin for the eNROLL Neo SDK — eKYC identity verification for Ionic and Capacitor mobile apps",
   "main": "dist/plugin.cjs.js",
   "module": "dist/esm/index.js",
   "types": "dist/esm/index.d.ts",
@@ -14,16 +14,16 @@
     "ios/Frameworks",
     "ios/Tests",
     "Package.swift",
-    "EnrollCapacitorPlugin.podspec"
+    "EnrollCapacitorNeo.podspec"
   ],
   "author": "LuminSoft",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/LuminSoft/enroll-capacitor-plugin.git"
+    "url": "git+https://github.com/LuminSoft/enroll-capacitor-neo.git"
   },
   "bugs": {
-    "url": "https://github.com/LuminSoft/enroll-capacitor-plugin/issues"
+    "url": "https://github.com/LuminSoft/enroll-capacitor-neo/issues"
   },
   "keywords": [
     "capacitor",
@@ -31,16 +31,18 @@
     "native",
     "ekyc",
     "enroll",
+    "enroll-neo",
     "identity-verification",
     "luminsoft",
     "ionic",
     "biometric",
-    "onboarding"
+    "onboarding",
+    "neo"
   ],
-  "homepage": "https://github.com/LuminSoft/enroll-capacitor-plugin#readme",
+  "homepage": "https://github.com/LuminSoft/enroll-capacitor-neo#readme",
   "scripts": {
     "verify": "npm run verify:ios && npm run verify:android && npm run verify:web",
-    "verify:ios": "xcodebuild -scheme EnrollCapacitorPlugin -destination generic/platform=iOS",
+    "verify:ios": "xcodebuild -scheme EnrollCapacitorNeo -destination generic/platform=iOS",
     "verify:android": "cd android && ./gradlew clean build test && cd ..",
     "verify:web": "npm run build",
     "lint": "npm run eslint && npm run prettier -- --check && npm run swiftlint -- lint",
@@ -48,7 +50,6 @@
     "eslint": "eslint . --ext ts",
     "prettier": "prettier \"**/*.{css,html,ts,js,java}\" --plugin=prettier-plugin-java",
     "swiftlint": "node-swiftlint",
-    "docgen": "docgen --api EnrollPlugin --output-readme README.md --output-json dist/docs.json",
     "build": "npm run clean && tsc && rollup -c rollup.config.mjs",
     "clean": "rimraf ./dist",
     "watch": "tsc --watch",

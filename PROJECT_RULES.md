@@ -1,4 +1,4 @@
-# Project Rules — eNROLL Capacitor Plugin
+# Project Rules — eNROLL Neo Capacitor Plugin
 
 > **CRITICAL**: This plugin is used by government ministries and enterprise clients for user onboarding (eKYC).
 > Every change must be treated as high-risk and reviewed thoroughly.

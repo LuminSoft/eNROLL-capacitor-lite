@@ -2,5 +2,5 @@
 include ':capacitor-android'
 project(':capacitor-android').projectDir = new File('../node_modules/@capacitor/android/capacitor')
 
-include ':enroll-capacitor-plugin'
-project(':enroll-capacitor-plugin').projectDir = new File('../../android')
+include ':enroll-capacitor-neo'
+project(':enroll-capacitor-neo').projectDir = new File('../../android')

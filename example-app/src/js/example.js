@@ -1,8 +1,8 @@
-import { Enroll } from 'enroll-capacitor-plugin';
+import { Enroll } from 'enroll-capacitor-neo';
 
-const flutterDefaults = {
-  tenantId: 'TENANT_ID',
-  tenantSecret: 'TENANT_SECRET',
+const defaultValues = {
+  tenantId: '9235e61e-3322-4940-a78e-4c182cf7ef63',
+  tenantSecret: '736db9db-680a-4608-b545-1c7d636c7487',
   requestId: 'REQUEST_ID',
   enrollMode: 'onboarding',
   enrollEnvironment: 'staging',
@@ -36,7 +36,7 @@ const fieldIds = [
 
 const elements = {
   startButton: document.getElementById('startEnrollButton'),
-  resetButton: document.getElementById('fillFlutterDefaultsButton'),
+  resetButton: document.getElementById('fillDefaultsButton'),
   clearButton: document.getElementById('clearResultsButton'),
   statusBox: document.getElementById('statusBox'),
   requestIdResult: document.getElementById('requestIdResult'),
@@ -64,20 +64,20 @@ function normalizeOptionalString(value) {
 }
 
 function applyDefaults() {
-  document.getElementById('tenantId').value = flutterDefaults.tenantId;
-  document.getElementById('tenantSecret').value = flutterDefaults.tenantSecret;
-  document.getElementById('requestId').value = flutterDefaults.requestId;
-  document.getElementById('enrollMode').value = flutterDefaults.enrollMode;
-  document.getElementById('enrollEnvironment').value = flutterDefaults.enrollEnvironment;
-  document.getElementById('localizationCode').value = flutterDefaults.localizationCode;
-  document.getElementById('applicantId').value = flutterDefaults.applicantId;
-  document.getElementById('levelOfTrust').value = flutterDefaults.levelOfTrust;
-  document.getElementById('googleApiKey').value = flutterDefaults.googleApiKey;
-  document.getElementById('correlationId').value = flutterDefaults.correlationId;
-  document.getElementById('templateId').value = flutterDefaults.templateId;
-  document.getElementById('contractParameters').value = flutterDefaults.contractParameters;
-  document.getElementById('enrollExitStep').value = flutterDefaults.enrollExitStep;
-  document.getElementById('skipTutorial').checked = flutterDefaults.skipTutorial;
+  document.getElementById('tenantId').value = defaultValues.tenantId;
+  document.getElementById('tenantSecret').value = defaultValues.tenantSecret;
+  document.getElementById('requestId').value = defaultValues.requestId;
+  document.getElementById('enrollMode').value = defaultValues.enrollMode;
+  document.getElementById('enrollEnvironment').value = defaultValues.enrollEnvironment;
+  document.getElementById('localizationCode').value = defaultValues.localizationCode;
+  document.getElementById('applicantId').value = defaultValues.applicantId;
+  document.getElementById('levelOfTrust').value = defaultValues.levelOfTrust;
+  document.getElementById('googleApiKey').value = defaultValues.googleApiKey;
+  document.getElementById('correlationId').value = defaultValues.correlationId;
+  document.getElementById('templateId').value = defaultValues.templateId;
+  document.getElementById('contractParameters').value = defaultValues.contractParameters;
+  document.getElementById('enrollExitStep').value = defaultValues.enrollExitStep;
+  document.getElementById('skipTutorial').checked = defaultValues.skipTutorial;
 }
 
 function clearResults() {

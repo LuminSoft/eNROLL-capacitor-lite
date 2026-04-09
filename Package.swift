@@ -2,11 +2,11 @@
 import PackageDescription
 
 let package = Package(
-    name: "EnrollCapacitorPlugin",
+    name: "EnrollCapacitorNeo",
     platforms: [.iOS(.v15)],
     products: [
         .library(
-            name: "EnrollCapacitorPlugin",
+            name: "EnrollCapacitorNeo",
             targets: ["EnrollPlugin"])
     ],
     dependencies: [

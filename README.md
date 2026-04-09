@@ -1,6 +1,6 @@
-# eNROLL Capacitor Plugin
+# eNROLL Neo Capacitor Plugin
 
-Capacitor plugin for the **eNROLL Lite SDK** — eKYC identity verification for Ionic mobile apps on Android and iOS.
+Capacitor plugin for the **eNROLL Neo SDK** — eKYC identity verification for Ionic and Capacitor mobile apps on Android and iOS.
 
 eNROLL is a lightweight compliance solution that prevents identity fraud and phishing. Powered by AI, it reduces errors and speeds up identification, ensuring secure verification.
 
@@ -9,6 +9,8 @@ eNROLL is a lightweight compliance solution that prevents identity fraud and phi
 Current native SDK versions:
 - **Android:** eNROLL-Lite-Android v1.2.4 (via JitPack)
 - **iOS:** EnrollFramework xcframework + EnrollNeoCore 1.0.6 (via CocoaPods)
+
+> This is the **Neo / Lumin Light** variant of the eNROLL SDK. For the standard eNROLL SDK, see the [eNROLL documentation](https://lumin-soft.gitbook.io/ekyc/integration-guide/mobile-plugin/enroll-android-sdk).
 
 ## Requirements
 
@@ -25,7 +27,7 @@ Current native SDK versions:
 ## Installation
 
 ```bash
-npm install enroll-capacitor-plugin
+npm install enroll-capacitor-neo
 npx cap sync
 ```
 
@@ -115,8 +117,8 @@ Then enable **Near Field Communication Tag Reading** in Xcode → Target → Sig
 ### Basic Example (Ionic/Angular)
 
 ```typescript
-import { Enroll } from 'enroll-capacitor-plugin';
-import type { EnrollSuccessResult } from 'enroll-capacitor-plugin';
+import { Enroll } from 'enroll-capacitor-neo';
+import type { EnrollSuccessResult } from 'enroll-capacitor-neo';
 
 // Listen for request ID events (fires mid-flow)
 const listener = await Enroll.addListener('onRequestId', (data) => {
@@ -243,7 +245,7 @@ Used with `enrollExitStep` to terminate the flow after a specific step:
 - All SDK network calls use HTTPS.
 - Regularly update the plugin to the latest stable version.
 
-## Further Documentation
+## Documentation
 
 - [API Reference](docs/api.md)
 - [Android Integration](docs/integration-android.md)
@@ -251,9 +253,8 @@ Used with `enrollExitStep` to terminate the flow after a specific step:
 - [Ionic/Angular Integration](docs/integration-ionic-angular.md)
 - [Testing Guide](docs/testing.md)
 - [Release Process](docs/release.md)
-- [Architecture](ARCHITECTURE.md)
+- [Publish Checklist](docs/publish-checklist.md)
 - [Contributing](CONTRIBUTING.md)
-- [Project Rules](PROJECT_RULES.md)
 
 ## License
 

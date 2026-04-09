@@ -1,6 +1,6 @@
 # iOS Integration Guide
 
-Detailed setup instructions for using the eNROLL Capacitor Plugin on iOS.
+Detailed setup instructions for using the eNROLL Neo Capacitor Plugin on iOS.
 
 ## Prerequisites
 
@@ -13,7 +13,7 @@ Detailed setup instructions for using the eNROLL Capacitor Plugin on iOS.
 ## Step 1: Install the Plugin
 
 ```bash
-npm install enroll-capacitor-plugin
+npm install enroll-capacitor-neo
 npx cap sync ios
 ```
 

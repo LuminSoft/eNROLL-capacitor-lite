@@ -1,7 +1,7 @@
 {
   "name": "capacitor-app",
   "version": "1.0.0",
-  "description": "An Amazing Capacitor App",
+  "description": "Example app for testing the eNROLL Neo Capacitor plugin",
   "type": "module",
   "keywords": [
     "capacitor",
@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@capacitor/core": "latest",
-    "enroll-capacitor-plugin": "file:..",
+    "enroll-capacitor-neo": "file:..",
     "@capacitor/ios": "^8.0.0",
     "@capacitor/android": "^8.0.0"
   },

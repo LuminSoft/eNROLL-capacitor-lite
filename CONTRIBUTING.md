@@ -1,6 +1,6 @@
 # Contributing
 
-This guide provides instructions for contributing to this Capacitor plugin.
+This guide provides instructions for contributing to the eNROLL Neo Capacitor plugin.
 
 ## Developing
 
@@ -10,8 +10,8 @@ This guide provides instructions for contributing to this Capacitor plugin.
 
 ```bash
 # Clone the repo
-git clone https://github.com/LuminSoft/enroll-capacitor-plugin.git
-cd enroll-capacitor-plugin
+git clone https://github.com/LuminSoft/enroll-capacitor-neo.git
+cd enroll-capacitor-neo
 
 # Install dependencies
 npm install

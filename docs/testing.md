@@ -1,6 +1,6 @@
 # Testing Guide
 
-How to test the eNROLL Capacitor Plugin.
+How to test the eNROLL Neo Capacitor Plugin.
 
 ## Prerequisites
 
@@ -12,7 +12,7 @@ How to test the eNROLL Capacitor Plugin.
 ## TypeScript Build Verification
 
 ```bash
-cd /path/to/enroll-capacitor-plugin
+cd /path/to/enroll-capacitor-neo
 npm run build
 ```
 

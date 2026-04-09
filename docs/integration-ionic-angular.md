@@ -1,6 +1,6 @@
 # Ionic / Angular Integration Guide
 
-Step-by-step guide for integrating the eNROLL Capacitor Plugin into an Ionic Angular mobile app.
+Step-by-step guide for integrating the eNROLL Neo Capacitor Plugin into an Ionic Angular mobile app.
 
 ## Prerequisites
 
@@ -12,7 +12,7 @@ Step-by-step guide for integrating the eNROLL Capacitor Plugin into an Ionic Ang
 ## Step 1: Install the Plugin
 
 ```bash
-npm install enroll-capacitor-plugin
+npm install enroll-capacitor-neo
 npx cap sync
 ```
 
@@ -31,12 +31,12 @@ Then implement the service:
 ```typescript
 // src/app/services/enroll.service.ts
 import { Injectable } from '@angular/core';
-import { Enroll } from 'enroll-capacitor-plugin';
+import { Enroll } from 'enroll-capacitor-neo';
 import type {
   StartEnrollOptions,
   EnrollSuccessResult,
   EnrollRequestIdResult,
-} from 'enroll-capacitor-plugin';
+} from 'enroll-capacitor-neo';
 import type { PluginListenerHandle } from '@capacitor/core';
 
 @Injectable({ providedIn: 'root' })

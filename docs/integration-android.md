@@ -1,6 +1,6 @@
 # Android Integration Guide
 
-Detailed setup instructions for using the eNROLL Capacitor Plugin on Android.
+Detailed setup instructions for using the eNROLL Neo Capacitor Plugin on Android.
 
 ## Prerequisites
 
@@ -11,7 +11,7 @@ Detailed setup instructions for using the eNROLL Capacitor Plugin on Android.
 ## Step 1: Install the Plugin
 
 ```bash
-npm install enroll-capacitor-plugin
+npm install enroll-capacitor-neo
 npx cap sync android
 ```
 
@@ -70,7 +70,7 @@ If you enable minification, you may need ProGuard rules. The plugin includes a `
 
 ```proguard
 -keep class com.luminsoft.enroll_sdk.** { *; }
--keep class com.luminsoft.enroll.capacitor.** { *; }
+-keep class com.luminsoft.enroll.capacitor.neo.** { *; }
 ```
 
 ## Permissions

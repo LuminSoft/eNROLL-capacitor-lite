@@ -1,11 +1,11 @@
 # API Reference
 
-Full TypeScript API reference for the eNROLL Capacitor Plugin.
+Full TypeScript API reference for the eNROLL Neo Capacitor Plugin.
 
 ## Plugin Import
 
 ```typescript
-import { Enroll } from 'enroll-capacitor-plugin';
+import { Enroll } from 'enroll-capacitor-neo';
 import type {
   StartEnrollOptions,
   EnrollSuccessResult,
@@ -18,7 +18,7 @@ import type {
   EnrollStepType,
   EnrollColors,
   EnrollColor,
-} from 'enroll-capacitor-plugin';
+} from 'enroll-capacitor-neo';
 ```
 
 ## Methods

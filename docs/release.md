@@ -1,6 +1,6 @@
 # Release Process
 
-How to publish a new version of the eNROLL Capacitor Plugin.
+How to publish a new version of the eNROLL Neo Capacitor Plugin.
 
 ## Pre-Release Checklist
 
@@ -65,7 +65,7 @@ npm publish
 
 3. **Verify:** Install the published version in a test project:
    ```bash
-   npm install enroll-capacitor-plugin@X.Y.Z
+   npm install enroll-capacitor-neo@X.Y.Z
    npx cap sync
    ```
 
@@ -74,7 +74,7 @@ npm publish
 When clients need to update:
 
 ```bash
-npm update enroll-capacitor-plugin
+npm update enroll-capacitor-neo
 npx cap sync
 # iOS only:
 cd ios/App && pod install && cd ../..
@@ -85,7 +85,7 @@ cd ios/App && pod install && cd ../..
 If a bad version is published:
 
 ```bash
-npm unpublish enroll-capacitor-plugin@X.Y.Z
+npm unpublish enroll-capacitor-neo@X.Y.Z
 ```
 
 > Note: npm unpublish only works within 72 hours of publishing. After that, publish a patch fix instead.

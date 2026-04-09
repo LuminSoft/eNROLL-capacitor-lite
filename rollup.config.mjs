@@ -4,7 +4,7 @@ export default {
     {
       file: 'dist/plugin.js',
       format: 'iife',
-      name: 'capacitorEnroll',
+      name: 'capacitorEnrollNeo',
       globals: {
         '@capacitor/core': 'capacitorExports',
       },

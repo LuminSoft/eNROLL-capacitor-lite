@@ -212,9 +212,9 @@ export interface EnrollRequestIdResult {
 // ---------------------------------------------------------------------------
 
 /**
- * Capacitor plugin for the eNROLL Lite SDK.
+ * Capacitor plugin for the eNROLL Neo SDK.
  *
- * Provides eKYC identity verification for Ionic mobile apps on Android and iOS.
+ * Provides eKYC identity verification for Ionic and Capacitor mobile apps on Android and iOS.
  * **Web / browser usage is not supported** — this plugin is for native mobile only.
  */
 export interface EnrollPlugin {

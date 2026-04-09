@@ -1,6 +1,6 @@
 # Tasks
 
-Living task tracker for the eNROLL Capacitor Plugin project.
+Living task tracker for the eNROLL Neo Capacitor Plugin project.
 
 ## Epic 1: Project Scaffolding
 - [x] Initialize Capacitor plugin project
@@ -28,7 +28,7 @@ Living task tracker for the eNROLL Capacitor Plugin project.
 - [x] Implement `EnrollPlugin.swift` with CAPPlugin + EnrollCallBack
 - [x] Options parsing, color mapping, enum mapping
 - [x] RTL layout configuration for Arabic
-- [x] Correct `amlCheck` mapping (fixed Flutter bug)
+- [x] Correct `amlCheck` step-type mapping
 - [ ] Manual smoke test on physical iOS device
 
 ## Epic 4: Documentation

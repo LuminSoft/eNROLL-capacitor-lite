@@ -1,4 +1,4 @@
-package com.luminsoft.enroll.capacitor
+package com.luminsoft.enroll.capacitor.neo
 
 import android.util.Log
 import com.getcapacitor.JSObject

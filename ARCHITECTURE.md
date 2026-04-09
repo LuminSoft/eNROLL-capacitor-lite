@@ -1,6 +1,6 @@
 # Architecture
 
-This document describes the internal architecture of the eNROLL Capacitor Plugin.
+This document describes the internal architecture of the eNROLL Neo Capacitor Plugin.
 
 ## System Overview
 
@@ -8,7 +8,7 @@ This document describes the internal architecture of the eNROLL Capacitor Plugin
 ┌─────────────────────────────────────────────────────────┐
 │                  Ionic / Angular App                     │
 │                                                         │
-│   import { Enroll } from 'enroll-capacitor-plugin';     │
+│   import { Enroll } from 'enroll-capacitor-neo';     │
 │   Enroll.startEnroll({ ... })                           │
 └──────────────────────┬──────────────────────────────────┘
                        │  TypeScript → Capacitor Bridge
@@ -121,7 +121,7 @@ Both platforms include:
 |----------|-----------|
 | Promise for success/error, listener for requestId | requestId fires mid-flow (not terminal); Promise is idiomatic for one-shot results |
 | String literal unions instead of TS enums | No runtime overhead, better tree-shaking, idiomatic TypeScript |
-| Full native success model exposed | Richer than Flutter plugin; enables exit-step workflows |
-| All 5 modes supported | Feature parity with native SDK, not limited to Flutter's 4 |
+| Full native success model exposed | Richer result type; enables exit-step workflows |
+| All 5 modes supported | Full feature parity with the native SDK |
 | Kotlin for Android | Matches the native SDK language; better null safety |
-| `amlCheck` mapped correctly | Fixes a bug from the Flutter iOS bridge |
+| `amlCheck` mapped correctly | Ensures correct step-type mapping for AML checks |

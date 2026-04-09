@@ -1,17 +1,17 @@
-# Changelog
+# Changelog — eNROLL Neo Capacitor Plugin
 
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.1.0] - Unreleased
+## [1.0.0] - 2025-04-08
 
 ### Added
-- Initial Capacitor plugin scaffolding
-- TypeScript type definitions for full eNROLL API surface
-- Android native bridge (Kotlin) calling eNROLL-Lite-Android v1.2.4
-- iOS native bridge (Swift) calling EnrollFramework xcframework
+- Initial public release of `enroll-capacitor-neo`
+- TypeScript type definitions for the full eNROLL Neo API surface
+- Android native bridge (Kotlin) using eNROLL-Lite-Android v1.2.4 via JitPack
+- iOS native bridge (Swift) using EnrollFramework xcframework + EnrollNeoCore 1.0.6 via CocoaPods
 - Support for all 5 enrollment modes: onboarding, auth, update, signContract, forgetProfileData
 - Full success model exposure (applicantId, enrollMessage, documentId, requestId, exitStepCompleted, completedStepName)
 - Custom color theming support
@@ -21,4 +21,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Double-launch prevention guard
 - Input validation with clear error codes
 - Web stub that throws clear "not supported" error
-- Comprehensive documentation (README, ARCHITECTURE, PROJECT_RULES, integration guides)
+- Comprehensive documentation and integration guides
