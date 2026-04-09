@@ -7,6 +7,7 @@ Step-by-step guide for publishing a new version to npm.
 - You need an npm account with publish access
 - Node.js 18+ installed
 - Run `npm login` if not already authenticated
+- Preferred flow: use `./scripts/publish-release.sh`
 
 ## Pre-Publish Checklist
 
@@ -19,6 +20,24 @@ Step-by-step guide for publishing a new version to npm.
 - [ ] CHANGELOG.md has a new version entry with today's date
 
 ## Version Bump
+
+Recommended:
+
+```bash
+./scripts/publish-release.sh --patch
+```
+
+or:
+
+```bash
+./scripts/publish-release.sh --minor
+./scripts/publish-release.sh --major
+./scripts/publish-release.sh --version X.Y.Z
+```
+
+This script performs the version bump plus review/build/package preview checks.
+
+Manual alternative:
 
 Update the version in `package.json`:
 
@@ -47,6 +66,12 @@ This runs: `clean` → `tsc` → `rollup`
 
 ```bash
 npm publish
+```
+
+Preferred scripted publish:
+
+```bash
+./scripts/publish-release.sh --patch --publish
 ```
 
 The `prepublishOnly` hook in `package.json` runs `npm run build` automatically before publishing.

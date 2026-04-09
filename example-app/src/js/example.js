@@ -1,8 +1,8 @@
 import { Enroll } from 'enroll-capacitor-neo';
 
 const defaultValues = {
-  tenantId: '9235e61e-3322-4940-a78e-4c182cf7ef63',
-  tenantSecret: '736db9db-680a-4608-b545-1c7d636c7487',
+  tenantId: 'TENANT_ID',
+  tenantSecret: 'TENANT_SECRET',
   requestId: 'REQUEST_ID',
   enrollMode: 'onboarding',
   enrollEnvironment: 'staging',

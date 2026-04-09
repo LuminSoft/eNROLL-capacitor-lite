@@ -12,15 +12,33 @@ How to publish a new version of the eNROLL Neo Capacitor Plugin.
 - [ ] README.md up to date
 - [ ] Security review completed (no hardcoded secrets, no PII logging)
 
-## Version Bump
+## Preferred Release Script
 
-Update the version in `package.json`:
+Use the release script to handle version bump, review scan, changelog validation, build, package preview, and optional publish:
 
-```json
-{
-  "version": "X.Y.Z"
-}
+```bash
+./scripts/publish-release.sh --patch
+./scripts/publish-release.sh --minor
+./scripts/publish-release.sh --version X.Y.Z
 ```
+
+To actually publish after the dry run:
+
+```bash
+./scripts/publish-release.sh --patch --publish
+```
+
+What the script does:
+- updates `package.json` using `npm version --no-git-tag-version`
+- scans for risky text like TODOs, AI references, local paths, and placeholder secrets
+- checks that `CHANGELOG.md` contains the new version with today's date
+- runs `npm run build`
+- runs `npm pack --dry-run`
+- optionally runs `npm whoami` and `npm publish`
+
+## Manual Version Bump
+
+If you do not use the script, update the version in `package.json` manually or with `npm version`.
 
 Follow semantic versioning:
 
@@ -38,7 +56,7 @@ The podspec reads version from `package.json` automatically.
 npm run build
 ```
 
-This runs: clean → docgen → tsc → rollup
+This runs: clean → tsc → rollup
 
 ## Publish to npm
 
@@ -48,6 +66,12 @@ npm login
 
 # Publish (prepublishOnly hook runs build automatically)
 npm publish
+```
+
+The repo now includes a scripted flow here:
+
+```bash
+./scripts/publish-release.sh --patch --publish
 ```
 
 ## Post-Publish
