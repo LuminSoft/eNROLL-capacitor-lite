@@ -13,10 +13,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@capacitor/android": "^8.0.0",
     "@capacitor/core": "latest",
-    "enroll-capacitor-neo": "file:..",
     "@capacitor/ios": "^8.0.0",
-    "@capacitor/android": "^8.0.0"
+    "enroll-capacitor-neo": "file:.."
   },
   "devDependencies": {
     "@capacitor/cli": "latest",

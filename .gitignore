@@ -68,3 +68,22 @@ captures
 
 # External native build folder generated in Android Studio 2.2 and later
 .externalNativeBuild
+
+# Derived data (custom location)
+.derived-data/
+
+# License files (private per applicationId)
+*.lic
+
+# Example app build artifacts
+example-app/node_modules/
+example-app/dist/
+example-app/android/app/build/
+example-app/android/.gradle/
+example-app/ios/App/Pods/
+example-app/ios/App/Podfile.lock
+example-app/ios/App/*.xcworkspace/xcuserdata/
+example-app/ios/App/*.xcodeproj/xcuserdata/
+example-app/android/app/src/main/assets/public/
+example-app/ios/App/App/public/
+example-app/package-lock.json

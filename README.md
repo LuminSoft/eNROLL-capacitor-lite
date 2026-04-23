@@ -245,16 +245,6 @@ Used with `enrollExitStep` to terminate the flow after a specific step:
 - All SDK network calls use HTTPS.
 - Regularly update the plugin to the latest stable version.
 
-## Documentation
-
-- [API Reference](docs/api.md)
-- [Android Integration](docs/integration-android.md)
-- [iOS Integration](docs/integration-ios.md)
-- [Ionic/Angular Integration](docs/integration-ionic-angular.md)
-- [Testing Guide](docs/testing.md)
-- [Release Process](docs/release.md)
-- [Publish Checklist](docs/publish-checklist.md)
-- [Contributing](CONTRIBUTING.md)
 
 ## License
 
