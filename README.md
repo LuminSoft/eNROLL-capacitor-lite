@@ -7,8 +7,8 @@ eNROLL is a lightweight compliance solution that prevents identity fraud and phi
 > **⚠️ Native mobile only.** This plugin does **not** support browser/web usage. It requires Capacitor running on a physical or emulated Android/iOS device.
 
 Current native SDK versions:
-- **Android:** eNROLL-Lite-Android v1.2.4 (via JitPack)
-- **iOS:** EnrollFramework xcframework + EnrollNeoCore 1.0.6 (via CocoaPods)
+- **Android:** eNROLL-Lite-Android v1.2.6 (via JitPack)
+- **iOS:** EnrollFramework xcframework + EnrollNeoCore 1.0.13 (via CocoaPods)
 
 > This is the **Neo / Lumin Light** variant of the eNROLL SDK. For the standard eNROLL SDK, see the [eNROLL documentation](https://lumin-soft.gitbook.io/ekyc/integration-guide/mobile-plugin/enroll-android-sdk).
 
