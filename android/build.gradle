@@ -64,7 +64,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':capacitor-android')
     implementation "androidx.appcompat:appcompat:$androidxAppCompatVersion"
-    implementation 'com.github.LuminSoft:eNROLL-Lite-Android:v1.2.6'
+    implementation 'com.github.LuminSoft:eNROLL-Lite-Android:v1.3.2'
     implementation 'com.google.code.gson:gson:2.8.8'
     testImplementation "junit:junit:$junitVersion"
     androidTestImplementation "androidx.test.ext:junit:$androidxJunitVersion"
