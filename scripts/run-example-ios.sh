@@ -10,6 +10,7 @@ SCHEME="App"
 CONFIGURATION="${CONFIGURATION:-Debug}"
 DEVICE_ID="${DEVICE_ID:-}"
 DERIVED_DATA_PATH="${DERIVED_DATA_PATH:-$ROOT_DIR/.derived-data/run-example-ios}"
+ALLOW_PROVISIONING_UPDATES="${ALLOW_PROVISIONING_UPDATES:-1}"
 PLUGIN_PACKAGE_NAME="$(sed -n 's/  "name": "\(.*\)",/\1/p' "$ROOT_DIR/package.json" | head -n 1)"
 
 list_connected_ios_devices() {
@@ -96,12 +97,18 @@ list_connected_ios_devices
 select_device_if_needed
 
 echo "==> Building iOS app for device $DEVICE_ID"
+XCODEBUILD_SIGNING_FLAGS=()
+if [[ "$ALLOW_PROVISIONING_UPDATES" != "0" ]]; then
+  XCODEBUILD_SIGNING_FLAGS+=("-allowProvisioningUpdates")
+fi
+
 xcodebuild \
   -workspace "$WORKSPACE_PATH" \
   -scheme "$SCHEME" \
   -destination "id=$DEVICE_ID" \
   -configuration "$CONFIGURATION" \
   -derivedDataPath "$DERIVED_DATA_PATH" \
+  "${XCODEBUILD_SIGNING_FLAGS[@]}" \
   build
 
 APP_PATH="$DERIVED_DATA_PATH/Build/Products/${CONFIGURATION}-iphoneos/App.app"
