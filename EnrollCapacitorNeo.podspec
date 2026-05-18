@@ -14,7 +14,7 @@ Pod::Spec.new do |s|
   s.vendored_frameworks = 'ios/Frameworks/EnrollFramework.xcframework'
   s.ios.deployment_target = '15.5'
   s.dependency 'Capacitor'
-  s.dependency 'EnrollNeoCore', '1.0.13'
+  s.dependency 'EnrollNeoCore', '1.0.17'
   s.dependency 'FirebaseRemoteConfig'
   s.swift_version = '5.0'
   s.pod_target_xcconfig = {

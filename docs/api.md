@@ -18,6 +18,10 @@ import type {
   EnrollStepType,
   EnrollColors,
   EnrollColor,
+  EnrollTheme,
+  EnrollIcons,
+  EnrollLogoConfig,
+  EnrollStepIcon,
 } from 'enroll-capacitor-neo';
 ```
 
@@ -77,6 +81,7 @@ removeAllListeners(): Promise<void>
 | `requestId` | `string` | | — | Resume previous request |
 | `contractParameters` | `string` | | — | JSON contract params |
 | `enrollColors` | `EnrollColors` | | — | Custom color overrides |
+| `enrollTheme` | `EnrollTheme` | | — | Unified theme (colors + icons). Takes priority over `enrollColors` |
 | `enrollForcedDocumentType` | `EnrollForcedDocumentType` | | — | Force document type |
 | `enrollExitStep` | `EnrollStepType` | | — | Exit after step |
 
@@ -143,6 +148,32 @@ removeAllListeners(): Promise<void>
 All properties are optional `EnrollColor`:
 
 `primary` · `secondary` · `appBackgroundColor` · `textColor` · `errorColor` · `successColor` · `warningColor` · `appWhite` · `appBlack`
+
+### `EnrollTheme`
+
+Unified theme (colors + icons). Takes priority over `enrollColors` when both are set.
+Icon customization is Android-only; use `enrollColors` for cross-platform colors.
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `colors` | `EnrollColors` | Optional color overrides |
+| `icons` | `EnrollIcons` | Optional icon overrides |
+
+### `EnrollLogoConfig`
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `mode` | `'defaultLogo' \| 'hidden' \| 'custom'` | Logo display mode |
+| `assetName` | `string` | Drawable name for custom logo |
+| `renderingMode` | `'original' \| 'template'` | Color rendering mode |
+| `showSponsoredBy` | `boolean` | Show "Sponsored by" label (default `true`) |
+
+### `EnrollStepIcon`
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `assetName` | `string` | Android drawable resource name |
+| `renderingMode` | `'original' \| 'template'` | Color rendering mode (default `'original'`) |
 
 ---
 

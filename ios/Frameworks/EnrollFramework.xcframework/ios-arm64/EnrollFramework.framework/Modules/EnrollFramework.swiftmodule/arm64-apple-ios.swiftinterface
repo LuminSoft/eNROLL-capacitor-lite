@@ -7,12 +7,11 @@ import AVKit
 import Combine
 import CommonCrypto
 import CoreLocation
+import CoreNFC
 import CryptoKit
 import DeveloperToolsSupport
 @_exported import EnrollFramework
 import EnrollLite
-import FirebaseCore
-import FirebaseRemoteConfig
 import Foundation
 import MapKit
 import QuartzCore
@@ -22,6 +21,7 @@ import UIKit
 import UserNotifications
 import WebKit
 import _Concurrency
+import _CoreNFC_UIKit
 import _StringProcessing
 import _SwiftConcurrencyShims
 public enum EliteOTPAnimationTypes {
@@ -40,6 +40,279 @@ public enum EliteOTPAnimationTypes {
   public var hashValue: Swift.Int {
     get
   }
+}
+public enum EnrollIconRenderingMode : Swift.Equatable {
+  case original
+  case template
+  public static func == (a: EnrollFramework.EnrollIconRenderingMode, b: EnrollFramework.EnrollIconRenderingMode) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public struct EnrollIcon : Swift.Equatable {
+  public var assetName: Swift.String
+  public var renderingMode: EnrollFramework.EnrollIconRenderingMode
+  public var validationMode: EnrollFramework.IconValidationMode
+  public var bundle: Foundation.Bundle
+  public let image: UIKit.UIImage?
+  public init(assetName: Swift.String, renderingMode: EnrollFramework.EnrollIconRenderingMode = .original, bundle: Foundation.Bundle = .main, validationMode: EnrollFramework.IconValidationMode = .relaxed)
+  #if compiler(>=5.3) && $NonescapableTypes
+  public func validatedAssetName() -> Swift.String?
+  #endif
+  public static func == (lhs: EnrollFramework.EnrollIcon, rhs: EnrollFramework.EnrollIcon) -> Swift.Bool
+}
+public struct StepIcon : Swift.Equatable {
+  public var icon: EnrollFramework.EnrollIcon
+  public init(icon: EnrollFramework.EnrollIcon)
+  public static func == (a: EnrollFramework.StepIcon, b: EnrollFramework.StepIcon) -> Swift.Bool
+}
+public enum LogoMode : Swift.Equatable {
+  case `default`
+  case hidden
+  case custom
+  public static func == (a: EnrollFramework.LogoMode, b: EnrollFramework.LogoMode) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public struct LogoConfig : Swift.Equatable {
+  public var mode: EnrollFramework.LogoMode
+  public var icon: EnrollFramework.EnrollIcon?
+  public var showSponsoredBy: Swift.Bool
+  #if compiler(>=5.3) && $NonescapableTypes
+  public init(mode: EnrollFramework.LogoMode = .default, icon: EnrollFramework.EnrollIcon? = nil, showSponsoredBy: Swift.Bool = true)
+  #endif
+  public static func == (a: EnrollFramework.LogoConfig, b: EnrollFramework.LogoConfig) -> Swift.Bool
+}
+public struct LocationIcons : Swift.Equatable {
+  public var tutorial: EnrollFramework.StepIcon?
+  public var requestAccess: EnrollFramework.StepIcon?
+  public var accessError: EnrollFramework.StepIcon?
+  public var grab: EnrollFramework.StepIcon?
+  #if compiler(>=5.3) && $NonescapableTypes
+  public init(tutorial: EnrollFramework.StepIcon? = nil, requestAccess: EnrollFramework.StepIcon? = nil, accessError: EnrollFramework.StepIcon? = nil, grab: EnrollFramework.StepIcon? = nil)
+  #endif
+  public static func == (a: EnrollFramework.LocationIcons, b: EnrollFramework.LocationIcons) -> Swift.Bool
+}
+public struct NationalIdIcons : Swift.Equatable {
+  public var tutorial: EnrollFramework.StepIcon?
+  public var tutorialIdOrPassport: EnrollFramework.StepIcon?
+  public var preScan: EnrollFramework.StepIcon?
+  public var scanError: EnrollFramework.StepIcon?
+  public var choose: EnrollFramework.StepIcon?
+  #if compiler(>=5.3) && $NonescapableTypes
+  public init(tutorial: EnrollFramework.StepIcon? = nil, tutorialIdOrPassport: EnrollFramework.StepIcon? = nil, preScan: EnrollFramework.StepIcon? = nil, scanError: EnrollFramework.StepIcon? = nil, choose: EnrollFramework.StepIcon? = nil)
+  #endif
+  public static func == (a: EnrollFramework.NationalIdIcons, b: EnrollFramework.NationalIdIcons) -> Swift.Bool
+}
+public struct PassportIcons : Swift.Equatable {
+  public var tutorial: EnrollFramework.StepIcon?
+  public var preScan: EnrollFramework.StepIcon?
+  public var ePassportPreScan: EnrollFramework.StepIcon?
+  public var choose: EnrollFramework.StepIcon?
+  public var scanError: EnrollFramework.StepIcon?
+  #if compiler(>=5.3) && $NonescapableTypes
+  public init(tutorial: EnrollFramework.StepIcon? = nil, preScan: EnrollFramework.StepIcon? = nil, ePassportPreScan: EnrollFramework.StepIcon? = nil, choose: EnrollFramework.StepIcon? = nil, scanError: EnrollFramework.StepIcon? = nil)
+  #endif
+  public static func == (a: EnrollFramework.PassportIcons, b: EnrollFramework.PassportIcons) -> Swift.Bool
+}
+public struct PhoneIcons : Swift.Equatable {
+  public var tutorial: EnrollFramework.StepIcon?
+  public var select: EnrollFramework.StepIcon?
+  public var validateOtp: EnrollFramework.StepIcon?
+  #if compiler(>=5.3) && $NonescapableTypes
+  public init(tutorial: EnrollFramework.StepIcon? = nil, select: EnrollFramework.StepIcon? = nil, validateOtp: EnrollFramework.StepIcon? = nil)
+  #endif
+  public static func == (a: EnrollFramework.PhoneIcons, b: EnrollFramework.PhoneIcons) -> Swift.Bool
+}
+public struct EmailIcons : Swift.Equatable {
+  public var tutorial: EnrollFramework.StepIcon?
+  public var select: EnrollFramework.StepIcon?
+  public var validateOtp: EnrollFramework.StepIcon?
+  #if compiler(>=5.3) && $NonescapableTypes
+  public init(tutorial: EnrollFramework.StepIcon? = nil, select: EnrollFramework.StepIcon? = nil, validateOtp: EnrollFramework.StepIcon? = nil)
+  #endif
+  public static func == (a: EnrollFramework.EmailIcons, b: EnrollFramework.EmailIcons) -> Swift.Bool
+}
+public struct FaceMatchingIcons : Swift.Equatable {
+  public var tutorial: EnrollFramework.StepIcon?
+  public var preScan: EnrollFramework.StepIcon?
+  public var error: EnrollFramework.StepIcon?
+  #if compiler(>=5.3) && $NonescapableTypes
+  public init(tutorial: EnrollFramework.StepIcon? = nil, preScan: EnrollFramework.StepIcon? = nil, error: EnrollFramework.StepIcon? = nil)
+  #endif
+  public static func == (a: EnrollFramework.FaceMatchingIcons, b: EnrollFramework.FaceMatchingIcons) -> Swift.Bool
+}
+public struct SecurityQuestionsIcons : Swift.Equatable {
+  public var tutorial: EnrollFramework.StepIcon?
+  public var authScreen: EnrollFramework.StepIcon?
+  #if compiler(>=5.3) && $NonescapableTypes
+  public init(tutorial: EnrollFramework.StepIcon? = nil, authScreen: EnrollFramework.StepIcon? = nil)
+  #endif
+  public static func == (a: EnrollFramework.SecurityQuestionsIcons, b: EnrollFramework.SecurityQuestionsIcons) -> Swift.Bool
+}
+public struct PasswordIcons : Swift.Equatable {
+  public var tutorial: EnrollFramework.StepIcon?
+  public var authScreen: EnrollFramework.StepIcon?
+  #if compiler(>=5.3) && $NonescapableTypes
+  public init(tutorial: EnrollFramework.StepIcon? = nil, authScreen: EnrollFramework.StepIcon? = nil)
+  #endif
+  public static func == (a: EnrollFramework.PasswordIcons, b: EnrollFramework.PasswordIcons) -> Swift.Bool
+}
+public struct SignatureIcons : Swift.Equatable {
+  public var tutorial: EnrollFramework.StepIcon?
+  #if compiler(>=5.3) && $NonescapableTypes
+  public init(tutorial: EnrollFramework.StepIcon? = nil)
+  #endif
+  public static func == (a: EnrollFramework.SignatureIcons, b: EnrollFramework.SignatureIcons) -> Swift.Bool
+}
+public struct BackgroundIcons : Swift.Equatable {
+  public var main: EnrollFramework.StepIcon?
+  public var layer1: EnrollFramework.StepIcon?
+  public var layer2: EnrollFramework.StepIcon?
+  public var layer3: EnrollFramework.StepIcon?
+  public var blur: EnrollFramework.StepIcon?
+  public var header: EnrollFramework.StepIcon?
+  public var footer: EnrollFramework.StepIcon?
+  #if compiler(>=5.3) && $NonescapableTypes
+  public init(main: EnrollFramework.StepIcon? = nil, layer1: EnrollFramework.StepIcon? = nil, layer2: EnrollFramework.StepIcon? = nil, layer3: EnrollFramework.StepIcon? = nil, blur: EnrollFramework.StepIcon? = nil, header: EnrollFramework.StepIcon? = nil, footer: EnrollFramework.StepIcon? = nil)
+  #endif
+  public static func == (a: EnrollFramework.BackgroundIcons, b: EnrollFramework.BackgroundIcons) -> Swift.Bool
+}
+public struct PopupIcons : Swift.Equatable {
+  public var background: EnrollFramework.StepIcon?
+  public var warningIcon: EnrollFramework.StepIcon?
+  public var errorIcon: EnrollFramework.StepIcon?
+  public var successIcon: EnrollFramework.StepIcon?
+  public var errorSign: EnrollFramework.StepIcon?
+  public var successSign: EnrollFramework.StepIcon?
+  public var warningSign: EnrollFramework.StepIcon?
+  #if compiler(>=5.3) && $NonescapableTypes
+  public init(background: EnrollFramework.StepIcon? = nil, warningIcon: EnrollFramework.StepIcon? = nil, errorIcon: EnrollFramework.StepIcon? = nil, successIcon: EnrollFramework.StepIcon? = nil, errorSign: EnrollFramework.StepIcon? = nil, successSign: EnrollFramework.StepIcon? = nil, warningSign: EnrollFramework.StepIcon? = nil)
+  #endif
+  public static func == (a: EnrollFramework.PopupIcons, b: EnrollFramework.PopupIcons) -> Swift.Bool
+}
+public struct FieldIcons : Swift.Equatable {
+  public var user: EnrollFramework.StepIcon?
+  public var calendar: EnrollFramework.StepIcon?
+  public var gender: EnrollFramework.StepIcon?
+  public var issuingAuthority: EnrollFramework.StepIcon?
+  public var nationality: EnrollFramework.StepIcon?
+  public var num: EnrollFramework.StepIcon?
+  public var passport: EnrollFramework.StepIcon?
+  public var address: EnrollFramework.StepIcon?
+  public var idCard: EnrollFramework.StepIcon?
+  public var profession: EnrollFramework.StepIcon?
+  public var religion: EnrollFramework.StepIcon?
+  public var maritalStatus: EnrollFramework.StepIcon?
+  #if compiler(>=5.3) && $NonescapableTypes
+  public init(user: EnrollFramework.StepIcon? = nil, calendar: EnrollFramework.StepIcon? = nil, gender: EnrollFramework.StepIcon? = nil, issuingAuthority: EnrollFramework.StepIcon? = nil, nationality: EnrollFramework.StepIcon? = nil, num: EnrollFramework.StepIcon? = nil, passport: EnrollFramework.StepIcon? = nil, address: EnrollFramework.StepIcon? = nil, idCard: EnrollFramework.StepIcon? = nil, profession: EnrollFramework.StepIcon? = nil, religion: EnrollFramework.StepIcon? = nil, maritalStatus: EnrollFramework.StepIcon? = nil)
+  #endif
+  public static func == (a: EnrollFramework.FieldIcons, b: EnrollFramework.FieldIcons) -> Swift.Bool
+}
+public struct UiIcons : Swift.Equatable {
+  public var visibility: EnrollFramework.StepIcon?
+  public var visibilityOff: EnrollFramework.StepIcon?
+  public var mobile: EnrollFramework.StepIcon?
+  public var mail: EnrollFramework.StepIcon?
+  public var answer: EnrollFramework.StepIcon?
+  public var error: EnrollFramework.StepIcon?
+  public var info: EnrollFramework.StepIcon?
+  public var edit: EnrollFramework.StepIcon?
+  public var activePhone: EnrollFramework.StepIcon?
+  #if compiler(>=5.3) && $NonescapableTypes
+  public init(visibility: EnrollFramework.StepIcon? = nil, visibilityOff: EnrollFramework.StepIcon? = nil, mobile: EnrollFramework.StepIcon? = nil, mail: EnrollFramework.StepIcon? = nil, answer: EnrollFramework.StepIcon? = nil, error: EnrollFramework.StepIcon? = nil, info: EnrollFramework.StepIcon? = nil, edit: EnrollFramework.StepIcon? = nil, activePhone: EnrollFramework.StepIcon? = nil)
+  #endif
+  public static func == (a: EnrollFramework.UiIcons, b: EnrollFramework.UiIcons) -> Swift.Bool
+}
+public struct CommonIcons : Swift.Equatable {
+  public var backgrounds: EnrollFramework.BackgroundIcons
+  public var popups: EnrollFramework.PopupIcons
+  public var fieldIcons: EnrollFramework.FieldIcons
+  public var ui: EnrollFramework.UiIcons
+  public var termsAndConditions: EnrollFramework.StepIcon?
+  #if compiler(>=5.3) && $NonescapableTypes
+  public init(backgrounds: EnrollFramework.BackgroundIcons = BackgroundIcons(), popups: EnrollFramework.PopupIcons = PopupIcons(), fieldIcons: EnrollFramework.FieldIcons = FieldIcons(), ui: EnrollFramework.UiIcons = UiIcons(), termsAndConditions: EnrollFramework.StepIcon? = nil)
+  #endif
+  public static func == (a: EnrollFramework.CommonIcons, b: EnrollFramework.CommonIcons) -> Swift.Bool
+}
+public struct UpdateIcons : Swift.Equatable {
+  public var modeIcon: EnrollFramework.StepIcon?
+  public var idCard: EnrollFramework.StepIcon?
+  public var passport: EnrollFramework.StepIcon?
+  public var mobile: EnrollFramework.StepIcon?
+  public var email: EnrollFramework.StepIcon?
+  public var device: EnrollFramework.StepIcon?
+  public var address: EnrollFramework.StepIcon?
+  public var securityQuestions: EnrollFramework.StepIcon?
+  public var password: EnrollFramework.StepIcon?
+  #if compiler(>=5.3) && $NonescapableTypes
+  public init(modeIcon: EnrollFramework.StepIcon? = nil, idCard: EnrollFramework.StepIcon? = nil, passport: EnrollFramework.StepIcon? = nil, mobile: EnrollFramework.StepIcon? = nil, email: EnrollFramework.StepIcon? = nil, device: EnrollFramework.StepIcon? = nil, address: EnrollFramework.StepIcon? = nil, securityQuestions: EnrollFramework.StepIcon? = nil, password: EnrollFramework.StepIcon? = nil)
+  #endif
+  public static func == (a: EnrollFramework.UpdateIcons, b: EnrollFramework.UpdateIcons) -> Swift.Bool
+}
+public struct ForgetIcons : Swift.Equatable {
+  public var modeIcon: EnrollFramework.StepIcon?
+  public var nationalId: EnrollFramework.StepIcon?
+  public var passport: EnrollFramework.StepIcon?
+  public var phone: EnrollFramework.StepIcon?
+  public var email: EnrollFramework.StepIcon?
+  public var device: EnrollFramework.StepIcon?
+  public var location: EnrollFramework.StepIcon?
+  public var securityQuestions: EnrollFramework.StepIcon?
+  public var password: EnrollFramework.StepIcon?
+  #if compiler(>=5.3) && $NonescapableTypes
+  public init(modeIcon: EnrollFramework.StepIcon? = nil, nationalId: EnrollFramework.StepIcon? = nil, passport: EnrollFramework.StepIcon? = nil, phone: EnrollFramework.StepIcon? = nil, email: EnrollFramework.StepIcon? = nil, device: EnrollFramework.StepIcon? = nil, location: EnrollFramework.StepIcon? = nil, securityQuestions: EnrollFramework.StepIcon? = nil, password: EnrollFramework.StepIcon? = nil)
+  #endif
+  public static func == (a: EnrollFramework.ForgetIcons, b: EnrollFramework.ForgetIcons) -> Swift.Bool
+}
+public struct AppIcons : Swift.Equatable {
+  public var logo: EnrollFramework.LogoConfig
+  public var location: EnrollFramework.LocationIcons
+  public var nationalId: EnrollFramework.NationalIdIcons?
+  public var passport: EnrollFramework.PassportIcons
+  public var phone: EnrollFramework.PhoneIcons
+  public var email: EnrollFramework.EmailIcons
+  public var faceMatching: EnrollFramework.FaceMatchingIcons
+  public var securityQuestions: EnrollFramework.SecurityQuestionsIcons
+  public var password: EnrollFramework.PasswordIcons
+  public var signature: EnrollFramework.SignatureIcons
+  public var common: EnrollFramework.CommonIcons
+  public var update: EnrollFramework.UpdateIcons
+  public var forget: EnrollFramework.ForgetIcons
+  #if compiler(>=5.3) && $NonescapableTypes
+  public init(logo: EnrollFramework.LogoConfig = LogoConfig(), location: EnrollFramework.LocationIcons = LocationIcons(), nationalId: EnrollFramework.NationalIdIcons? = nil, passport: EnrollFramework.PassportIcons = PassportIcons(), phone: EnrollFramework.PhoneIcons = PhoneIcons(), email: EnrollFramework.EmailIcons = EmailIcons(), faceMatching: EnrollFramework.FaceMatchingIcons = FaceMatchingIcons(), securityQuestions: EnrollFramework.SecurityQuestionsIcons = SecurityQuestionsIcons(), password: EnrollFramework.PasswordIcons = PasswordIcons(), signature: EnrollFramework.SignatureIcons = SignatureIcons(), common: EnrollFramework.CommonIcons = CommonIcons(), update: EnrollFramework.UpdateIcons = UpdateIcons(), forget: EnrollFramework.ForgetIcons = ForgetIcons())
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  public func resolveCustomIcon(pageKey: Swift.String) -> EnrollFramework.StepIcon?
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  public func resolveCustomIcon(pageKey: Swift.String, pageClass: Swift.String) -> EnrollFramework.StepIcon?
+  #endif
+  public static func == (a: EnrollFramework.AppIcons, b: EnrollFramework.AppIcons) -> Swift.Bool
+}
+public struct EnrollTheme {
+  public var icons: EnrollFramework.AppIcons
+  public var colors: EnrollFramework.EnrollColors?
+  public struct Fonts {
+    public var titleFont: Swift.String?
+    public var bodyFont: Swift.String?
+    #if compiler(>=5.3) && $NonescapableTypes
+    public init(titleFont: Swift.String? = nil, bodyFont: Swift.String? = nil)
+    #endif
+  }
+  public struct Texts {
+    public var welcomeMessage: Swift.String?
+    public var errorText: Swift.String?
+    #if compiler(>=5.3) && $NonescapableTypes
+    public init(welcomeMessage: Swift.String? = nil, errorText: Swift.String? = nil)
+    #endif
+  }
+  #if compiler(>=5.3) && $NonescapableTypes
+  public init(icons: EnrollFramework.AppIcons = AppIcons(), colors: EnrollFramework.EnrollColors? = nil)
+  #endif
 }
 @objc @_inheritsConvenienceInitializers @_Concurrency.MainActor @preconcurrency final public class EliteOTPField : UIKit.UITextField {
   @_Concurrency.MainActor @preconcurrency final public var spacing: CoreFoundation.CGFloat
@@ -94,6 +367,17 @@ public class EnrollColors {
   public init(primary: UIKit.UIColor? = nil, secondary: UIKit.UIColor? = nil, appBackgroundColor: UIKit.UIColor? = nil, textColor: UIKit.UIColor? = nil, errorColor: UIKit.UIColor? = nil, successColor: UIKit.UIColor? = nil, warningColor: UIKit.UIColor? = nil, appWhite: UIKit.UIColor? = nil, appBlack: UIKit.UIColor? = nil)
   #endif
   @objc deinit
+}
+public struct ThemedImage {
+  #if compiler(>=5.3) && $NonescapableTypes
+  public static func named(_ name: Swift.String) -> UIKit.UIImage?
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  public static func named(_ name: Swift.String?) -> UIKit.UIImage?
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  public static func icon(_ icon: EnrollFramework.EnrollIcon?) -> UIKit.UIImage?
+  #endif
 }
 public struct EnrollErrorModel {
   public let errorMessage: Swift.String
@@ -163,8 +447,23 @@ public enum EnrollContractSignaturetApproach : Swift.Int {
 }
 public struct EnrollInitModel {
   #if compiler(>=5.3) && $NonescapableTypes
-  public init(tenantId: Swift.String, tenantSecret: Swift.String, enrollEnviroment: EnrollFramework.EnrollEnviroment? = .staging, localizationCode: EnrollFramework.LocalizationEnum = .en, enrollCallBack: (any EnrollFramework.EnrollCallBack)?, enrollMode: EnrollFramework.EnrollMode, skipTutorial: Swift.Bool? = false, enrollColors: EnrollFramework.EnrollColors? = nil, levelOffTrustId: Swift.String? = nil, applicantId: Swift.String? = nil, correlationId: Swift.String? = nil, updateSteps: [EnrollFramework.EnrollUpdateTypes]? = nil, customFontName: Swift.String? = nil, isEgyptionNationalId: Swift.Bool = false, forcedDocumentType: EnrollFramework.EnrollForcedDocumentType? = EnrollForcedDocumentType.deafult, requestId: Swift.String?, contractTemplateId: Swift.Int?, signContarctParam: Swift.String?, exitStep: EnrollFramework.StepType?) throws
+  public init(tenantId: Swift.String, tenantSecret: Swift.String, enrollEnviroment: EnrollFramework.EnrollEnviroment? = .staging, localizationCode: EnrollFramework.LocalizationEnum = .en, enrollCallBack: (any EnrollFramework.EnrollCallBack)?, enrollMode: EnrollFramework.EnrollMode, skipTutorial: Swift.Bool? = false, enrollColors: EnrollFramework.EnrollColors? = nil, enrollTheme: EnrollFramework.EnrollTheme? = nil, levelOffTrustId: Swift.String? = nil, applicantId: Swift.String? = nil, correlationId: Swift.String? = nil, updateSteps: [EnrollFramework.EnrollUpdateTypes]? = nil, customFontName: Swift.String? = nil, isEgyptionNationalId: Swift.Bool = false, forcedDocumentType: EnrollFramework.EnrollForcedDocumentType? = EnrollForcedDocumentType.deafult, requestId: Swift.String?, contractTemplateId: Swift.Int?, signContarctParam: Swift.String?, exitStep: EnrollFramework.StepType?) throws
   #endif
+}
+public struct IconValidationConfig {
+  public static var maxWidth: CoreFoundation.CGFloat
+  public static var maxHeight: CoreFoundation.CGFloat
+  public static var maxMemoryBytes: Swift.Int
+  public static var fallbackAssetName: Swift.String
+}
+public enum IconValidationMode : Swift.Equatable {
+  case relaxed
+  case strict
+  public static func == (a: EnrollFramework.IconValidationMode, b: EnrollFramework.IconValidationMode) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
 }
 extension UIKit.UIDevice {
   @_Concurrency.MainActor @preconcurrency public static let modelName: Swift.String
@@ -378,6 +677,8 @@ public enum StepType : Swift.Int, Swift.Codable, Swift.Equatable {
 }
 extension EnrollFramework.EliteOTPAnimationTypes : Swift.Equatable {}
 extension EnrollFramework.EliteOTPAnimationTypes : Swift.Hashable {}
+extension EnrollFramework.EnrollIconRenderingMode : Swift.Hashable {}
+extension EnrollFramework.LogoMode : Swift.Hashable {}
 extension EnrollFramework.EnrollMode : Swift.Equatable {}
 extension EnrollFramework.EnrollMode : Swift.Hashable {}
 extension EnrollFramework.EnrollForcedDocumentType : Swift.Equatable {}
@@ -389,6 +690,7 @@ extension EnrollFramework.EnrollContractSignatureMode : Swift.RawRepresentable {
 extension EnrollFramework.EnrollContractSignaturetApproach : Swift.Equatable {}
 extension EnrollFramework.EnrollContractSignaturetApproach : Swift.Hashable {}
 extension EnrollFramework.EnrollContractSignaturetApproach : Swift.RawRepresentable {}
+extension EnrollFramework.IconValidationMode : Swift.Hashable {}
 extension EnrollFramework.RelativeTimeStringType : Swift.Equatable {}
 extension EnrollFramework.RelativeTimeStringType : Swift.Hashable {}
 extension EnrollFramework.DateComponentType : Swift.Equatable {}

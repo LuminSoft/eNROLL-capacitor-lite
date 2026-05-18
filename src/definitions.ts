@@ -64,6 +64,207 @@ export type EnrollStepType =
   | 'csoCheck';
 
 // ---------------------------------------------------------------------------
+// Icon types (supported on Android and iOS)
+// ---------------------------------------------------------------------------
+
+/**
+ * Controls how a custom icon asset is colorized when displayed.
+ * - `'original'`  — renders the asset with its original colors (default)
+ * - `'template'`  — applies theme-color tinting to the entire asset
+ */
+export type EnrollIconRenderingMode = 'original' | 'template';
+
+/**
+ * Configuration for a single custom icon.
+ * `assetName` is the Android drawable resource name (without the `R.drawable.` prefix).
+ */
+export interface EnrollStepIcon {
+  assetName: string;
+  renderingMode?: EnrollIconRenderingMode;
+}
+
+/**
+ * Controls how the SDK logo is displayed.
+ * - `'defaultLogo'` — show the built-in eNROLL logo
+ * - `'hidden'`      — hide the logo entirely
+ * - `'custom'`      — show a custom logo asset
+ */
+export type EnrollLogoMode = 'defaultLogo' | 'hidden' | 'custom';
+
+/**
+ * Configuration for the SDK logo on splash screens and the app bar.
+ */
+export interface EnrollLogoConfig {
+  mode?: EnrollLogoMode;
+  assetName?: string;
+  renderingMode?: EnrollIconRenderingMode;
+  showSponsoredBy?: boolean;
+}
+
+export interface EnrollLocationIcons {
+  tutorial?: EnrollStepIcon;
+  requestAccess?: EnrollStepIcon;
+  accessError?: EnrollStepIcon;
+  grab?: EnrollStepIcon;
+}
+
+export interface EnrollNationalIdIcons {
+  tutorial?: EnrollStepIcon;
+  tutorialIdOrPassport?: EnrollStepIcon;
+  preScan?: EnrollStepIcon;
+  scanError?: EnrollStepIcon;
+  choose?: EnrollStepIcon;
+}
+
+export interface EnrollPassportIcons {
+  tutorial?: EnrollStepIcon;
+  preScan?: EnrollStepIcon;
+  ePassportPreScan?: EnrollStepIcon;
+  choose?: EnrollStepIcon;
+}
+
+export interface EnrollPhoneIcons {
+  tutorial?: EnrollStepIcon;
+  select?: EnrollStepIcon;
+  validateOtp?: EnrollStepIcon;
+}
+
+export interface EnrollEmailIcons {
+  tutorial?: EnrollStepIcon;
+  select?: EnrollStepIcon;
+  validateOtp?: EnrollStepIcon;
+}
+
+export interface EnrollFaceMatchingIcons {
+  tutorial?: EnrollStepIcon;
+  preScan?: EnrollStepIcon;
+  error?: EnrollStepIcon;
+}
+
+export interface EnrollSecurityQuestionsIcons {
+  tutorial?: EnrollStepIcon;
+  authScreen?: EnrollStepIcon;
+}
+
+export interface EnrollPasswordIcons {
+  tutorial?: EnrollStepIcon;
+  authScreen?: EnrollStepIcon;
+}
+
+export interface EnrollSignatureIcons {
+  tutorial?: EnrollStepIcon;
+}
+
+export interface EnrollBackgroundIcons {
+  main?: EnrollStepIcon;
+  layer1?: EnrollStepIcon;
+  layer2?: EnrollStepIcon;
+  layer3?: EnrollStepIcon;
+  blur?: EnrollStepIcon;
+  header?: EnrollStepIcon;
+  footer?: EnrollStepIcon;
+}
+
+export interface EnrollPopupIcons {
+  background?: EnrollStepIcon;
+  warningIcon?: EnrollStepIcon;
+  errorIcon?: EnrollStepIcon;
+  successIcon?: EnrollStepIcon;
+}
+
+export interface EnrollFieldIcons {
+  user?: EnrollStepIcon;
+  calendar?: EnrollStepIcon;
+  gender?: EnrollStepIcon;
+  issuingAuthority?: EnrollStepIcon;
+  nationality?: EnrollStepIcon;
+  num?: EnrollStepIcon;
+  passport?: EnrollStepIcon;
+  address?: EnrollStepIcon;
+  idCard?: EnrollStepIcon;
+  profession?: EnrollStepIcon;
+  religion?: EnrollStepIcon;
+  maritalStatus?: EnrollStepIcon;
+}
+
+export interface EnrollUiIcons {
+  visibility?: EnrollStepIcon;
+  visibilityOff?: EnrollStepIcon;
+  mobile?: EnrollStepIcon;
+  mail?: EnrollStepIcon;
+  answer?: EnrollStepIcon;
+  error?: EnrollStepIcon;
+  info?: EnrollStepIcon;
+  edit?: EnrollStepIcon;
+  activePhone?: EnrollStepIcon;
+}
+
+export interface EnrollCommonIcons {
+  backgrounds?: EnrollBackgroundIcons;
+  popups?: EnrollPopupIcons;
+  fieldIcons?: EnrollFieldIcons;
+  ui?: EnrollUiIcons;
+  termsAndConditions?: EnrollStepIcon;
+}
+
+export interface EnrollUpdateIcons {
+  modeIcon?: EnrollStepIcon;
+  idCard?: EnrollStepIcon;
+  passport?: EnrollStepIcon;
+  mobile?: EnrollStepIcon;
+  email?: EnrollStepIcon;
+  device?: EnrollStepIcon;
+  address?: EnrollStepIcon;
+  securityQuestions?: EnrollStepIcon;
+  password?: EnrollStepIcon;
+}
+
+export interface EnrollForgetIcons {
+  modeIcon?: EnrollStepIcon;
+  nationalId?: EnrollStepIcon;
+  passport?: EnrollStepIcon;
+  phone?: EnrollStepIcon;
+  email?: EnrollStepIcon;
+  device?: EnrollStepIcon;
+  location?: EnrollStepIcon;
+  securityQuestions?: EnrollStepIcon;
+  password?: EnrollStepIcon;
+}
+
+/**
+ * Top-level icon configuration for the eNROLL SDK.
+ * All fields are optional — when omitted, the SDK uses its built-in assets.
+ */
+export interface EnrollIcons {
+  logo?: EnrollLogoConfig;
+  location?: EnrollLocationIcons;
+  nationalId?: EnrollNationalIdIcons;
+  passport?: EnrollPassportIcons;
+  phone?: EnrollPhoneIcons;
+  email?: EnrollEmailIcons;
+  faceMatching?: EnrollFaceMatchingIcons;
+  securityQuestions?: EnrollSecurityQuestionsIcons;
+  password?: EnrollPasswordIcons;
+  signature?: EnrollSignatureIcons;
+  common?: EnrollCommonIcons;
+  update?: EnrollUpdateIcons;
+  forget?: EnrollForgetIcons;
+}
+
+/**
+ * Unified theme configuration (colors + icons) for the enrollment UI.
+ *
+ * If both `enrollTheme` and `enrollColors` are provided in `StartEnrollOptions`,
+ * `enrollTheme` takes priority and `enrollColors` is ignored.
+ *
+ * Both colors and icons are supported on **Android and iOS**.
+ */
+export interface EnrollTheme {
+  colors?: EnrollColors;
+  icons?: EnrollIcons;
+}
+
+// ---------------------------------------------------------------------------
 // Color types
 // ---------------------------------------------------------------------------
 
@@ -149,6 +350,12 @@ export interface StartEnrollOptions {
 
   /** Custom color overrides. */
   enrollColors?: EnrollColors;
+
+  /**
+   * Unified theme (colors + icons). Takes priority over `enrollColors` when both are set.
+   * Both colors and icons work on **Android and iOS**.
+   */
+  enrollTheme?: EnrollTheme;
 
   /** Force a specific document type for scanning. */
   enrollForcedDocumentType?: EnrollForcedDocumentType;

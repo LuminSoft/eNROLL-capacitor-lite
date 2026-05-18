@@ -16,6 +16,10 @@ xcuserdata/
 *.xcuserstate
 *.lock
 *.lic
+*.xcframework
+Podfile.lock
+Gemfile.lock
+fastlane/build/
 
 ## User settings
 .xcodeproj/project.xcworkspace/

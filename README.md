@@ -7,8 +7,8 @@ eNROLL is a lightweight compliance solution that prevents identity fraud and phi
 > **⚠️ Native mobile only.** This plugin does **not** support browser/web usage. It requires Capacitor running on a physical or emulated Android/iOS device.
 
 Current native SDK versions:
-- **Android:** eNROLL-Lite-Android v1.2.6 (via JitPack)
-- **iOS:** EnrollFramework xcframework + EnrollNeoCore 1.0.13 (via CocoaPods)
+- **Android:** eNROLL-Lite-Android v1.3.2 (via JitPack)
+- **iOS:** EnrollFramework xcframework + EnrollNeoCore 1.0.17 (via CocoaPods)
 
 > This is the **Neo / Lumin Light** variant of the eNROLL SDK. For the standard eNROLL SDK, see the [eNROLL documentation](https://lumin-soft.gitbook.io/ekyc/integration-guide/mobile-plugin/enroll-android-sdk).
 
@@ -198,6 +198,7 @@ const result = await Enroll.startEnroll({
 | `requestId` | `string` | | — | Resume a previous enrollment request |
 | `contractParameters` | `string` | | — | JSON string of contract parameters |
 | `enrollColors` | `EnrollColors` | | — | Custom UI color overrides |
+| `enrollTheme` | `EnrollTheme` | | — | Unified theme (colors + icons). Takes priority over `enrollColors` |
 | `enrollForcedDocumentType` | `EnrollForcedDocumentType` | | — | Force specific document type |
 | `enrollExitStep` | `EnrollStepType` | | — | Auto-close SDK after this step |
 
@@ -228,6 +229,47 @@ await Enroll.startEnroll({
   },
 });
 ```
+
+## Theme & Icon Customization
+
+Use `enrollTheme` for unified color + icon customization. When both `enrollTheme` and `enrollColors` are set, `enrollTheme` takes priority.
+
+> **Note:** Both color and icon customization are supported on **Android and iOS**. On Android, `assetName` refers to drawable resources; on iOS, it refers to image assets in `Assets.xcassets`.
+
+```typescript
+await Enroll.startEnroll({
+  // ...required params...
+  enrollTheme: {
+    colors: {
+      primary: { r: 29, g: 86, b: 184 },
+    },
+    icons: {
+      logo: {
+        mode: 'custom',
+        assetName: 'my_logo',
+        renderingMode: 'original',
+        showSponsoredBy: false,
+      },
+      nationalId: {
+        tutorial: { assetName: 'custom_nid_tutorial', renderingMode: 'template' },
+      },
+    },
+  },
+});
+```
+
+### Icon Asset Names (Android)
+
+Icon `assetName` values must correspond to Android drawable resource names (without the `R.drawable.` prefix). Place your custom icons in `android/app/src/main/res/drawable/`.
+
+### Logo Configuration
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `mode` | `'defaultLogo' \| 'hidden' \| 'custom'` | Logo display mode |
+| `assetName` | `string` | Drawable name for custom logo |
+| `renderingMode` | `'original' \| 'template'` | Color rendering mode |
+| `showSponsoredBy` | `boolean` | Show "Sponsored by" label (default `true`) |
 
 ## Enrollment Step Types
 

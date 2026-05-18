@@ -16,6 +16,29 @@ import com.luminsoft.enroll_sdk.core.models.LocalizationCode
 import com.luminsoft.enroll_sdk.main.main_data.main_models.get_onboaring_configurations.EkycStepType
 import com.luminsoft.enroll_sdk.sdk.eNROLL
 import com.luminsoft.enroll_sdk.ui_components.theme.AppColors
+import com.luminsoft.enroll_sdk.ui_components.theme.AppIcons
+import com.luminsoft.enroll_sdk.ui_components.theme.AppTheme
+import com.luminsoft.enroll_sdk.ui_components.theme.BackgroundIcons
+import com.luminsoft.enroll_sdk.ui_components.theme.CommonIcons
+import com.luminsoft.enroll_sdk.ui_components.theme.EmailIcons
+import com.luminsoft.enroll_sdk.ui_components.theme.FaceMatchingIcons
+import com.luminsoft.enroll_sdk.ui_components.theme.FieldIcons
+import com.luminsoft.enroll_sdk.ui_components.theme.ForgetIcons
+import com.luminsoft.enroll_sdk.ui_components.theme.IconRenderingMode
+import com.luminsoft.enroll_sdk.ui_components.theme.IconSource
+import com.luminsoft.enroll_sdk.ui_components.theme.LocationIcons
+import com.luminsoft.enroll_sdk.ui_components.theme.LogoConfig
+import com.luminsoft.enroll_sdk.ui_components.theme.LogoMode
+import com.luminsoft.enroll_sdk.ui_components.theme.NationalIdIcons
+import com.luminsoft.enroll_sdk.ui_components.theme.PassportIcons
+import com.luminsoft.enroll_sdk.ui_components.theme.PasswordIcons
+import com.luminsoft.enroll_sdk.ui_components.theme.PhoneIcons
+import com.luminsoft.enroll_sdk.ui_components.theme.PopupIcons
+import com.luminsoft.enroll_sdk.ui_components.theme.SecurityQuestionsIcons
+import com.luminsoft.enroll_sdk.ui_components.theme.SignatureIcons
+import com.luminsoft.enroll_sdk.ui_components.theme.StepIcon
+import com.luminsoft.enroll_sdk.ui_components.theme.UiIcons
+import com.luminsoft.enroll_sdk.ui_components.theme.UpdateIcons
 import androidx.compose.ui.graphics.Color
 import org.json.JSONObject
 
@@ -119,9 +142,28 @@ class EnrollPlugin : Plugin() {
             appBlack = Color(0xFF333333)
         )
 
-        val appColors = call.getObject("enrollColors")?.let { colorsJson ->
-            parseEnrollColors(colorsJson, defaultAppColors)
-        } ?: defaultAppColors
+        // ---- Theme (colors + icons) ----
+        val themeColors = call.getObject("enrollTheme")?.let { themeJson ->
+            themeJson.optJSONObject("colors")?.let { colorsJson ->
+                parseEnrollColors(JSObject(colorsJson.toString()), defaultAppColors)
+            }
+        }
+
+        val appColors = themeColors
+            ?: call.getObject("enrollColors")?.let { colorsJson ->
+                parseEnrollColors(colorsJson, defaultAppColors)
+            } ?: defaultAppColors
+
+        val appIcons = call.getObject("enrollTheme")?.let { themeJson ->
+            themeJson.optJSONObject("icons")?.let { iconsJson ->
+                parseAppIcons(iconsJson)
+            }
+        } ?: AppIcons()
+
+        val appTheme = AppTheme(
+            colors = appColors,
+            icons = appIcons
+        )
 
         // ---- Launch the SDK ----
         isFlowInProgress = true
@@ -175,7 +217,7 @@ class EnrollPlugin : Plugin() {
                 googleApiKey = googleApiKey,
                 skipTutorial = skipTutorial,
                 correlationId = correlationId,
-                appColors = appColors,
+                appTheme = appTheme,
                 enrollForcedDocumentType = enrollForcedDocumentType,
                 requestId = requestId,
                 templateId = templateId,
@@ -280,4 +322,141 @@ class EnrollPlugin : Plugin() {
             alpha = opacity.toFloat()
         )
     }
+
+    // ------------------------------------------------------------------
+    // Theme / icon parsing
+    // ------------------------------------------------------------------
+
+    private fun resolveDrawableName(name: String): Int {
+        val ctx = context ?: return 0
+        val resId = ctx.resources.getIdentifier(name, "drawable", ctx.packageName)
+        if (resId == 0) Log.w(TAG, "Drawable not found: $name")
+        return resId
+    }
+
+    private fun parseStepIcon(json: JSONObject): StepIcon? {
+        val assetName = json.optString("assetName", "").takeIf { it.isNotEmpty() } ?: return null
+        val resId = resolveDrawableName(assetName)
+        if (resId == 0) return null
+        val renderingMode = when (json.optString("renderingMode")) {
+            "template" -> IconRenderingMode.TEMPLATE
+            else -> IconRenderingMode.ORIGINAL
+        }
+        return StepIcon(source = IconSource.Resource(resId), renderingMode = renderingMode)
+    }
+
+    private fun parseLogoConfig(json: JSONObject): LogoConfig {
+        val mode = when (json.optString("mode")) {
+            "custom" -> LogoMode.CUSTOM
+            "hidden" -> LogoMode.HIDDEN
+            else -> LogoMode.DEFAULT
+        }
+        val asset = json.optString("assetName", "").takeIf { it.isNotEmpty() }?.let {
+            val resId = resolveDrawableName(it)
+            if (resId != 0) IconSource.Resource(resId) else null
+        }
+        val renderingMode = when (json.optString("renderingMode")) {
+            "template" -> IconRenderingMode.TEMPLATE
+            else -> IconRenderingMode.ORIGINAL
+        }
+        val showSponsoredBy = json.optBoolean("showSponsoredBy", true)
+        return LogoConfig(mode = mode, asset = asset, renderingMode = renderingMode, showSponsoredBy = showSponsoredBy)
+    }
+
+    private fun stepIconFromParent(parent: JSONObject, key: String): StepIcon? {
+        return parent.optJSONObject(key)?.let { parseStepIcon(it) }
+    }
+
+    private fun parseAppIcons(json: JSONObject): AppIcons {
+        return AppIcons(
+            logo = json.optJSONObject("logo")?.let { parseLogoConfig(it) } ?: LogoConfig(),
+            location = json.optJSONObject("location")?.let { parseLocationIcons(it) } ?: LocationIcons(),
+            nationalId = json.optJSONObject("nationalId")?.let { parseNationalIdIcons(it) } ?: NationalIdIcons(),
+            passport = json.optJSONObject("passport")?.let { parsePassportIcons(it) } ?: PassportIcons(),
+            phone = json.optJSONObject("phone")?.let { parsePhoneIcons(it) } ?: PhoneIcons(),
+            email = json.optJSONObject("email")?.let { parseEmailIcons(it) } ?: EmailIcons(),
+            faceMatching = json.optJSONObject("faceMatching")?.let { parseFaceMatchingIcons(it) } ?: FaceMatchingIcons(),
+            securityQuestions = json.optJSONObject("securityQuestions")?.let { parseSecurityQuestionsIcons(it) } ?: SecurityQuestionsIcons(),
+            password = json.optJSONObject("password")?.let { parsePasswordIcons(it) } ?: PasswordIcons(),
+            signature = json.optJSONObject("signature")?.let { parseSignatureIcons(it) } ?: SignatureIcons(),
+            common = json.optJSONObject("common")?.let { parseCommonIcons(it) } ?: CommonIcons(),
+            update = json.optJSONObject("update")?.let { parseUpdateIcons(it) } ?: UpdateIcons(),
+            forget = json.optJSONObject("forget")?.let { parseForgetIcons(it) } ?: ForgetIcons(),
+        )
+    }
+
+    private fun parseLocationIcons(j: JSONObject) = LocationIcons(
+        tutorial = stepIconFromParent(j, "tutorial"), requestAccess = stepIconFromParent(j, "requestAccess"),
+        accessError = stepIconFromParent(j, "accessError"), grab = stepIconFromParent(j, "grab"),
+    )
+    private fun parseNationalIdIcons(j: JSONObject) = NationalIdIcons(
+        tutorial = stepIconFromParent(j, "tutorial"), tutorialIdOrPassport = stepIconFromParent(j, "tutorialIdOrPassport"),
+        preScan = stepIconFromParent(j, "preScan"), scanError = stepIconFromParent(j, "scanError"), choose = stepIconFromParent(j, "choose"),
+    )
+    private fun parsePassportIcons(j: JSONObject) = PassportIcons(
+        tutorial = stepIconFromParent(j, "tutorial"), preScan = stepIconFromParent(j, "preScan"),
+        ePassportPreScan = stepIconFromParent(j, "ePassportPreScan"), choose = stepIconFromParent(j, "choose"),
+    )
+    private fun parsePhoneIcons(j: JSONObject) = PhoneIcons(
+        tutorial = stepIconFromParent(j, "tutorial"), select = stepIconFromParent(j, "select"), validateOtp = stepIconFromParent(j, "validateOtp"),
+    )
+    private fun parseEmailIcons(j: JSONObject) = EmailIcons(
+        tutorial = stepIconFromParent(j, "tutorial"), select = stepIconFromParent(j, "select"), validateOtp = stepIconFromParent(j, "validateOtp"),
+    )
+    private fun parseFaceMatchingIcons(j: JSONObject) = FaceMatchingIcons(
+        tutorial = stepIconFromParent(j, "tutorial"), preScan = stepIconFromParent(j, "preScan"), error = stepIconFromParent(j, "error"),
+    )
+    private fun parseSecurityQuestionsIcons(j: JSONObject) = SecurityQuestionsIcons(
+        tutorial = stepIconFromParent(j, "tutorial"), authScreen = stepIconFromParent(j, "authScreen"),
+    )
+    private fun parsePasswordIcons(j: JSONObject) = PasswordIcons(
+        tutorial = stepIconFromParent(j, "tutorial"), authScreen = stepIconFromParent(j, "authScreen"),
+    )
+    private fun parseSignatureIcons(j: JSONObject) = SignatureIcons(
+        tutorial = stepIconFromParent(j, "tutorial"),
+    )
+    private fun parseCommonIcons(j: JSONObject) = CommonIcons(
+        backgrounds = j.optJSONObject("backgrounds")?.let { parseBackgroundIcons(it) } ?: BackgroundIcons(),
+        popups = j.optJSONObject("popups")?.let { parsePopupIcons(it) } ?: PopupIcons(),
+        fieldIcons = j.optJSONObject("fieldIcons")?.let { parseFieldIcons(it) } ?: FieldIcons(),
+        ui = j.optJSONObject("ui")?.let { parseUiIcons(it) } ?: UiIcons(),
+        termsAndConditions = stepIconFromParent(j, "termsAndConditions"),
+    )
+    private fun parseBackgroundIcons(j: JSONObject) = BackgroundIcons(
+        main = stepIconFromParent(j, "main"), layer1 = stepIconFromParent(j, "layer1"),
+        layer2 = stepIconFromParent(j, "layer2"), layer3 = stepIconFromParent(j, "layer3"),
+        blur = stepIconFromParent(j, "blur"), header = stepIconFromParent(j, "header"), footer = stepIconFromParent(j, "footer"),
+    )
+    private fun parsePopupIcons(j: JSONObject) = PopupIcons(
+        background = stepIconFromParent(j, "background"), warningIcon = stepIconFromParent(j, "warningIcon"),
+        errorIcon = stepIconFromParent(j, "errorIcon"), successIcon = stepIconFromParent(j, "successIcon"),
+    )
+    private fun parseFieldIcons(j: JSONObject) = FieldIcons(
+        user = stepIconFromParent(j, "user"), calendar = stepIconFromParent(j, "calendar"),
+        gender = stepIconFromParent(j, "gender"), issuingAuthority = stepIconFromParent(j, "issuingAuthority"),
+        nationality = stepIconFromParent(j, "nationality"), num = stepIconFromParent(j, "num"),
+        passport = stepIconFromParent(j, "passport"), address = stepIconFromParent(j, "address"),
+        idCard = stepIconFromParent(j, "idCard"), profession = stepIconFromParent(j, "profession"),
+        religion = stepIconFromParent(j, "religion"), maritalStatus = stepIconFromParent(j, "maritalStatus"),
+    )
+    private fun parseUiIcons(j: JSONObject) = UiIcons(
+        visibility = stepIconFromParent(j, "visibility"), visibilityOff = stepIconFromParent(j, "visibilityOff"),
+        mobile = stepIconFromParent(j, "mobile"), mail = stepIconFromParent(j, "mail"),
+        answer = stepIconFromParent(j, "answer"), error = stepIconFromParent(j, "error"),
+        info = stepIconFromParent(j, "info"), edit = stepIconFromParent(j, "edit"), activePhone = stepIconFromParent(j, "activePhone"),
+    )
+    private fun parseUpdateIcons(j: JSONObject) = UpdateIcons(
+        modeIcon = stepIconFromParent(j, "modeIcon"), idCard = stepIconFromParent(j, "idCard"),
+        passport = stepIconFromParent(j, "passport"), mobile = stepIconFromParent(j, "mobile"),
+        email = stepIconFromParent(j, "email"), device = stepIconFromParent(j, "device"),
+        address = stepIconFromParent(j, "address"), securityQuestions = stepIconFromParent(j, "securityQuestions"),
+        password = stepIconFromParent(j, "password"),
+    )
+    private fun parseForgetIcons(j: JSONObject) = ForgetIcons(
+        modeIcon = stepIconFromParent(j, "modeIcon"), nationalId = stepIconFromParent(j, "nationalId"),
+        passport = stepIconFromParent(j, "passport"), phone = stepIconFromParent(j, "phone"),
+        email = stepIconFromParent(j, "email"), device = stepIconFromParent(j, "device"),
+        location = stepIconFromParent(j, "location"), securityQuestions = stepIconFromParent(j, "securityQuestions"),
+        password = stepIconFromParent(j, "password"),
+    )
 }

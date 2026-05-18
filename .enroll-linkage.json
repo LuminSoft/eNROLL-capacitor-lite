@@ -8,10 +8,10 @@
     "androidArtifact": "com.github.LuminSoft:eNROLL-Lite-Android",
     "androidVersion": "v1.3.2",
     "iosDistribution": "xcframework",
-    "iosVersion": "1.0.13",
+    "iosVersion": "1.0.17",
     "xcframeworkSource": "ios/Frameworks/EnrollFramework.xcframework",
     "iosCorePod": "EnrollNeoCore",
-    "iosCorePodVersion": "1.0.13"
+    "iosCorePodVersion": "1.0.17"
   },
   "pluginVersion": "1.0.0",
   "relatedProjects": [
@@ -65,8 +65,11 @@
       "startEnroll",
       "addListener:onRequestId",
       "removeAllListeners",
-      "enrollModes:onboarding,auth,update,signContract,forgetProfileData",
+      "enrollModes:onboarding,auth,update,signContract",
       "enrollColors",
+      "enrollTheme",
+      "iconCustomization",
+      "showSponsoredBy",
       "localization:en,ar",
       "forcedDocumentType",
       "exitStep",
@@ -76,13 +79,7 @@
       "requestId",
       "contractSigning"
     ],
-    "missingFromThisProject": [
-      "theming_enrollTheme",
-      "iconCustomization",
-      "showSponsoredBy",
-      "IOS_XCFRAMEWORK_OUTDATED:md5_mismatch_with_flutter_neo",
-      "IOS_ENROLLNEOCORE_OUTDATED:1.0.13_should_be_1.0.17"
-    ]
+    "missingFromThisProject": []
   },
   "docs": {
     "files": [
@@ -94,15 +91,12 @@
       "docs/integration-ios.md",
       "docs/integration-ionic-angular.md"
     ],
-    "missingDocsForFeatures": [
-      "iconCustomization",
-      "theming"
-    ]
+    "missingDocsForFeatures": []
   },
   "workflowCommands": {
     "checkNativeToFlutter": "/check-native-to-flutter",
     "copyFlutterToSiblingPlugins": "/copy-flutter-to-sibling-plugins",
     "checkSync": "bash /Users/luminsoft/StudioProjects/ekyc-android/scripts/check-enroll-sync.sh"
   },
-  "lastVerifiedAt": "2026-05-17T17:06:00Z"
+  "lastVerifiedAt": "2026-05-18T11:14:00Z"
 }
