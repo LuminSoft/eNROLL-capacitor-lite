@@ -16,6 +16,7 @@ Pod::Spec.new do |s|
   s.dependency 'Capacitor'
   s.dependency 'EnrollNeoCore', '1.0.17'
   s.dependency 'FirebaseRemoteConfig'
+  s.dependency 'OpenSSL-Universal'
   s.swift_version = '5.0'
   s.pod_target_xcconfig = {
     'DEFINES_MODULE' => 'YES',

@@ -11,7 +11,7 @@ end
 
 target 'App' do
   capacitor_pods
-  pod 'EnrollCapacitorPlugin', :path => '../../..'
+  pod 'EnrollCapacitorNeo', :path => '../../..'
 end
 
 post_install do |installer|

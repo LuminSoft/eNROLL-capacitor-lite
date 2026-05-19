@@ -200,13 +200,15 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-App/Pods-App-frameworks.sh",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/EnrollCapacitorPlugin/EnrollFramework.framework/EnrollFramework",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/EnrollCapacitorNeo/EnrollFramework.framework/EnrollFramework",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/EnrollNeoCore/EnrollLite.framework/EnrollLite",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL-Universal/OpenSSL.framework/OpenSSL",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/EnrollFramework.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/EnrollLite.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpenSSL.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
