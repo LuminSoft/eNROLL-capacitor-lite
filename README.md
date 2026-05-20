@@ -16,13 +16,26 @@ Current native SDK versions:
 
 | Platform | Minimum |
 |----------|---------|
-| Capacitor | 6.0+ |
+| Capacitor | 8.0+ |
 | Android minSdk | 24 |
-| Android compileSdk | 34 |
+| Android compileSdk | 36 |
+| Android targetSdk | 36 |
 | iOS deployment target | 15.5 |
 | Kotlin | 2.1.0 |
 | Swift | 5.0 |
 | Node.js | 18+ |
+
+## Client Integration Checklist
+
+Before starting integration, make sure you have:
+
+- `tenantId` and `tenantSecret` for the target environment.
+- The required flow: `onboarding`, `auth`, `update`, `signContract`, or `forgetProfileData`.
+- `applicantId` and `levelOfTrust` if you will use `auth`.
+- `applicantId` if you will use `update`.
+- `templateId` if you will use `signContract`.
+- A physical iOS device for iOS testing.
+- Android Studio / Xcode configured for the host Capacitor app.
 
 ## Installation
 
@@ -47,6 +60,8 @@ allprojects {
 }
 ```
 
+For projects that manage repositories from `android/settings.gradle`, add JitPack inside `dependencyResolutionManagement.repositories`.
+
 #### 2. Verify minSdkVersion
 
 Ensure `minSdkVersion` is at least **24** in `android/variables.gradle`:
@@ -54,6 +69,8 @@ Ensure `minSdkVersion` is at least **24** in `android/variables.gradle`:
 ```gradle
 ext {
     minSdkVersion = 24
+    compileSdkVersion = 36
+    targetSdkVersion = 36
 }
 ```
 
@@ -66,17 +83,12 @@ Add these sources to the **top** of your `ios/App/Podfile` (before `platform :io
 ```ruby
 source 'https://github.com/LuminSoft/eNROLL-Neo-Core-specs.git'
 source 'https://github.com/CocoaPods/Specs.git'
-```
 
-#### 2. Set Deployment Target
-
-Ensure iOS deployment target is at least **15.5** in your `ios/App/Podfile`:
-
-```ruby
 platform :ios, '15.5'
+use_frameworks! :linkage => :static
 ```
 
-#### 3. Add Info.plist Permissions
+#### 2. Add Info.plist Permissions
 
 Add to `ios/App/App/Info.plist`:
 
@@ -87,7 +99,7 @@ Add to `ios/App/App/Info.plist`:
 <string>We need your location for security compliance</string>
 ```
 
-#### 4. Install Pods
+#### 3. Install Pods
 
 ```bash
 cd ios/App && pod install && cd ../..
@@ -114,7 +126,7 @@ Then enable **Near Field Communication Tag Reading** in Xcode → Target → Sig
 
 ## Usage
 
-### Basic Example (Ionic/Angular)
+### Basic Example
 
 ```typescript
 import { Enroll } from 'enroll-capacitor-neo';
@@ -137,8 +149,8 @@ try {
 
   console.log('Success! Applicant ID:', result.applicantId);
   console.log('Exit step completed:', result.exitStepCompleted);
-} catch (error) {
-  console.error('Enrollment failed:', error);
+} catch (error: any) {
+  console.error('Enrollment failed:', error?.data ?? error);
 } finally {
   await listener.remove();
 }
@@ -156,6 +168,17 @@ const result = await Enroll.startEnroll({
 });
 ```
 
+### Update Mode
+
+```typescript
+const result = await Enroll.startEnroll({
+  tenantId: 'YOUR_TENANT_ID',
+  tenantSecret: 'YOUR_TENANT_SECRET',
+  enrollMode: 'update',
+  applicantId: 'APPLICANT_ID',
+});
+```
+
 ### Sign Contract Mode
 
 ```typescript
@@ -165,6 +188,16 @@ const result = await Enroll.startEnroll({
   enrollMode: 'signContract',
   templateId: '12345',
   contractParameters: '{"key": "value"}',
+});
+```
+
+### Forget Profile Data Mode
+
+```typescript
+const result = await Enroll.startEnroll({
+  tenantId: 'YOUR_TENANT_ID',
+  tenantSecret: 'YOUR_TENANT_SECRET',
+  enrollMode: 'forgetProfileData',
 });
 ```
 
@@ -179,6 +212,25 @@ const result = await Enroll.startEnroll({
 | `update` | Re-verify / update user | + `applicantId` |
 | `signContract` | Sign contract templates | + `templateId` |
 | `forgetProfileData` | Request profile data deletion | `tenantId`, `tenantSecret` |
+
+## Request ID and Resume
+
+The SDK can emit a `requestId` while the flow is still running. Store it on your backend if you need to resume an interrupted enrollment later.
+
+```typescript
+const listener = await Enroll.addListener('onRequestId', ({ requestId }) => {
+  // Send requestId to your backend and link it to your user/session.
+});
+
+await Enroll.startEnroll({
+  tenantId: 'YOUR_TENANT_ID',
+  tenantSecret: 'YOUR_TENANT_SECRET',
+  enrollMode: 'onboarding',
+  requestId: 'PREVIOUS_REQUEST_ID',
+});
+
+await listener.remove();
+```
 
 ## Configuration Options
 
@@ -258,9 +310,12 @@ await Enroll.startEnroll({
 });
 ```
 
-### Icon Asset Names (Android)
+### Icon Asset Names
 
-Icon `assetName` values must correspond to Android drawable resource names (without the `R.drawable.` prefix). Place your custom icons in `android/app/src/main/res/drawable/`.
+Icon `assetName` values reference platform-specific image assets:
+
+- **Android:** drawable resource names in `android/app/src/main/res/drawable/` without the `R.drawable.` prefix.
+- **iOS:** image asset names in the app target's `Assets.xcassets`.
 
 ### Logo Configuration
 
@@ -278,6 +333,51 @@ Used with `enrollExitStep` to terminate the flow after a specific step:
 `phoneOtp` · `personalConfirmation` · `smileLiveness` · `emailOtp` · `saveMobileDevice` · `deviceLocation` · `password` · `securityQuestions` · `amlCheck` · `termsAndConditions` · `electronicSignature` · `ntraCheck` · `csoCheck`
 
 ---
+
+## Platform Limitations
+
+| Feature | Android | iOS |
+|---------|---------|-----|
+| Color theming | ✅ | ✅ |
+| Icon customization | ✅ | ✅ |
+| Neo SDK | ✅ | ✅ |
+| Simulator support | ✅ (emulator) | ❌ (device only) |
+
+## Troubleshooting
+
+### Web Preview Error
+
+This plugin is native-only. Running in a browser, Ionic serve, or Vite preview will throw an unavailable error. Use:
+
+```bash
+npx cap run android
+npx cap run ios
+```
+
+### FLOW_IN_PROGRESS
+
+`FLOW_IN_PROGRESS` means `startEnroll` was called while another enrollment flow is already open. Disable the launch button until the returned promise resolves or rejects.
+
+### INVALID_ARGUMENT
+
+Check the required fields for the selected mode:
+
+- `onboarding`: `tenantId`, `tenantSecret`
+- `auth`: `tenantId`, `tenantSecret`, `applicantId`, `levelOfTrust`
+- `update`: `tenantId`, `tenantSecret`, `applicantId`
+- `signContract`: `tenantId`, `tenantSecret`, `templateId`
+- `forgetProfileData`: `tenantId`, `tenantSecret`
+
+### iOS Pod Install or Build Issues
+
+Confirm that the Podfile includes the required pod sources, `platform :ios, '15.5'`, and `use_frameworks! :linkage => :static`. Then run:
+
+```bash
+cd ios/App
+pod install
+```
+
+Build and test on a physical iOS device.
 
 ## Security Notes
 
